@@ -1,6 +1,9 @@
 const std = @import("std");
-const concept = @import("conecpt.zig");
+const concept = @import("concept.zig");
 const common = @import("common.zig");
+const exponential = @import("exponential.zig");
+const geometric = @import("geometric.zig");
+const trigonometric = @import("trigonometric.zig");
 const testing = std.testing;
 
 const TypeHelper = struct {
@@ -262,12 +265,6 @@ fn NumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime
 
             /// 3D vector representing unit on Z axis.
             pub const unit_z = Self.new(0, 0, 1);
-
-            /// Returns the cross product of the two input parameters, i.e. a vector that is perpendicular to the plane
-            /// containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span.
-            pub fn cross(a: Self, b: Self) Self {
-                return Self{ .x = a.y * b.z - a.z * b.y, .y = a.z * b.x - a.x * b.z, .z = a.x * b.y - a.y * b.x };
-            }
         }
     else
         struct {};
@@ -307,11 +304,27 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
                 return res;
             }
 
+            /// Performs component-wise addition wih single scalar value and returns vector.
+            pub fn adds(a: Self, scalar: Real) Self {
+                var res: Self = undefined;
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = @field(a, fld.name) + scalar;
+                return res;
+            }
+
             /// Performs component-wise subtraction and returns vector.
             pub fn sub(a: Self, b: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
                     @field(res, fld.name) = @field(a, fld.name) - @field(b, fld.name);
+                return res;
+            }
+
+            /// Performs component-wise subtraction with single scalar value and returns vector.
+            pub fn subs(a: Self, scalar: Real) Self {
+                var res: Self = undefined;
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = @field(a, fld.name) - scalar;
                 return res;
             }
 
@@ -324,7 +337,7 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             }
 
             /// Performs component-wise scaling by the factor provided with parameter 'scalar' and returns vector.
-            pub fn scale(a: Self, scalar: Real) Self {
+            pub fn muls(a: Self, scalar: Real) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
                     @field(res, fld.name) = @field(a, fld.name) * scalar;
@@ -335,17 +348,17 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             pub fn pow(a: Self, b: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = std.math.pow(@field(a, fld.name), @field(b, fld.name));
+                    @field(res, fld.name) = exponential.pow(@field(a, fld.name), @field(b, fld.name));
                 return res;
             }
 
             /// Performs component-wise multiplication and returns vector.
             ///
             /// This is variation of the pow function where the second parameter is always a scalar.
-            pub fn powf(a: Self, b: Real) Self {
+            pub fn pows(a: Self, scalar: Real) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = std.math.pow(@field(a, fld.name), b);
+                    @field(res, fld.name) = exponential.pow(@field(a, fld.name), scalar);
                 return res;
             }
 
@@ -355,22 +368,7 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             pub fn dot(a: Self, b: Self) Real {
                 var res: Real = 0;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    res += @field(a, fld.name) * @field(b, fld.name);
-                return res;
-            }
-
-            /// Returns a vector that points in the direction of reflection.
-            ///
-            /// The function has two input parameters of the type floating scalar or float vector: I, the incident vector, and N, the normal vector of the reflecting surface.
-            ///
-            /// To obtain the desired result the vector N has to be normalized.
-            /// The reflection vector always has the same length as the incident vector.
-            /// From this it follows that the reflection vector is normalized if N and I are both normalized.
-            pub fn reflect(inc: Self, norm: Self) Self {
-                const d2 = Self.dot(norm, inc) * 2;
-                var res: Self = undefined;
-                inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @field(inc, fld.name) - (@field(norm, fld.name) * d2);
+                    res += geometric.dot(@field(a, fld.name), @field(b, fld.name));
                 return res;
             }
 
@@ -380,7 +378,7 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             pub fn sign(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = std.math.sign(@field(vec, fld.name));
+                    @field(res, fld.name) = common.sign(@field(vec, fld.name));
                 return res;
             }
 
@@ -391,7 +389,18 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             pub fn mod(a: Self, b: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @mod(@field(a, fld.name), @field(b, fld.name));
+                    @field(res, fld.name) = common.mod(@field(a, fld.name), @field(b, fld.name));
+                return res;
+            }
+
+            /// Performs a component-wise modulo operation by calling builtin @mod function and returns vector.
+            ///
+            /// For unsigned integers this is the same as numerator % denominator.
+            /// Caller guarantees denominator > 0, otherwise the operation will result in a Remainder Division by Zero when runtime safety checks are enabled.
+            pub fn mods(a: Self, scalar: Real) Self {
+                var res: Self = undefined;
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = common.mod(@field(a, fld.name), scalar);
                 return res;
             }
 
@@ -399,17 +408,17 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             pub fn min(a: Self, b: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @min(@field(a, fld.name), @field(b, fld.name));
+                    @field(res, fld.name) = common.min(@field(a, fld.name), @field(b, fld.name));
                 return res;
             }
 
             /// Performs component-wise operation of getting the smaller of the two arguments and returns vector.
             ///
             /// This is variation of the min function where the second parameter is always a scalar.
-            pub fn minf(a: Self, scalar: Real) Self {
+            pub fn mins(a: Self, scalar: Real) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @min(@field(a, fld.name), scalar);
+                    @field(res, fld.name) = common.min(@field(a, fld.name), scalar);
                 return res;
             }
 
@@ -417,17 +426,17 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             pub fn max(a: Self, b: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @max(@field(a, fld.name), @field(b, fld.name));
+                    @field(res, fld.name) = common.max(@field(a, fld.name), @field(b, fld.name));
                 return res;
             }
 
             /// Performs component-wise operation of getting the greater of the two arguments and returns vector.
             ///
             /// This is variation of the max function where the second parameter is always a scalar.
-            pub fn maxf(a: Self, scalar: Real) Self {
+            pub fn maxs(a: Self, scalar: Real) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @max(@field(a, fld.name), scalar);
+                    @field(res, fld.name) = common.max(@field(a, fld.name), scalar);
                 return res;
             }
 
@@ -438,7 +447,7 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             pub fn clamp(vec: Self, low: Self, high: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @min(@max(@field(vec, fld.name), @field(low, fld.name)), @field(high, fld.name));
+                    @field(res, fld.name) = common.clamp(@field(vec, fld.name), @field(low, fld.name), @field(high, fld.name));
                 return res;
             }
 
@@ -448,28 +457,28 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
             ///
             /// The clamp function returns vec[i] if it is larger than low and smaller than high.
             /// In case vec[i] is smaller than low, low is returned. If x is larger than high, high is returned.
-            pub fn clampf(vec: Self, low: Real, high: Real) Self {
+            pub fn clamps(vec: Self, low: Real, high: Real) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @min(@max(@field(vec, fld.name), low), high);
+                    @field(res, fld.name) = common.clamp(@field(vec, fld.name), low, high);
                 return res;
             }
 
-            /// Performs component-wise check if vec[i] > edge[i] and returns 0 otherwise 1.
-            pub fn step(vec: Self, edge: Self) Self {
+            /// Performs component-wise check if vec[i] < edge[i] and returns 0 otherwise 1.
+            pub fn step(edge: Self, vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = if (@field(edge, fld.name) > @field(vec, fld.name)) 0 else 1;
+                    @field(res, fld.name) = common.step(@field(edge, fld.name), @field(vec, fld.name));
                 return res;
             }
 
             /// Performs component-wise check if vec[i] < edge and returns 0 otherwise 1.
             ///
             /// This is variation of the step function where the second parameter is always a scalars.
-            pub fn stepf(vec: Self, edge: Real) Self {
+            pub fn steps(edge: Real, vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = if (edge > @field(vec, fld.name)) 0 else 1;
+                    @field(res, fld.name) = common.step(edge, @field(vec, fld.name));
                 return res;
             }
 
@@ -509,6 +518,19 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
         struct {};
 }
 
+fn SignedNumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 3 and concept.isSignedNumeric(Real))
+        struct {
+            /// Returns the cross product of the two input parameters, i.e. a vector that is perpendicular to the plane
+            /// containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span.
+            pub fn cross(a: Self, b: Self) Self {
+                return Self{ .x = a.y * b.z - a.z * b.y, .y = a.z * b.x - a.x * b.z, .z = a.x * b.y - a.y * b.x };
+            }
+        }
+    else
+        struct {};
+}
+
 fn SignedNumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
     _ = Dimens;
     return if (concept.isSignedNumeric(Real))
@@ -517,7 +539,7 @@ fn SignedNumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn abs(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = if (comptime concept.isFloatingPoint(Real)) @fabs(@field(vec, fld.name)) else std.math.absInt(@field(vec, fld.name)) catch (comptime std.math.maxInt(Real));
+                    @field(res, fld.name) = common.abs(@field(vec, fld.name));
                 return res;
             }
 
@@ -526,6 +548,21 @@ fn SignedNumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
                     @field(res, fld.name) = -@field(vec, fld.name);
+                return res;
+            }
+
+            /// Returns a vector that points in the direction of reflection.
+            ///
+            /// The function has two input parameters of the type float vector: I, the incident vector, and N, the normal vector of the reflecting surface.
+            ///
+            /// To obtain the desired result the vector N has to be normalized.
+            /// The reflection vector always has the same length as the incident vector.
+            /// From this it follows that the reflection vector is normalized if N and I are both normalized.
+            pub fn reflect(inc: Self, norm: Self) Self {
+                const d2 = Self.dot(norm, inc) * 2;
+                var res: Self = undefined;
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = @field(inc, fld.name) - (@field(norm, fld.name) * d2);
                 return res;
             }
 
@@ -553,6 +590,14 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
                 return res;
             }
 
+            /// Performs component-wise division and returns vector.
+            pub fn divs(a: Self, scalar: Real) Self {
+                var res: Self = undefined;
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = @field(a, fld.name) / scalar;
+                return res;
+            }
+
             /// The length function returns the length of a vector defined by the Euclidean norm, i.e. the square root of the sum of the squared components.
             pub fn length(vec: Self) Real {
                 return @sqrt(Self.dot(vec, vec));
@@ -567,13 +612,8 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
 
             /// The normalize function returns a vector with length 1.0 that is parallel to x, i.e. x divided by its length.
             pub fn normalize(vec: Self) Self {
-                if (comptime concept.isFloatingPoint32(Real)) {
-                    const d = Self.dot(vec, vec);
-                    return if (d != 0.0) vec.scale(common.qrsqrt(d)) else Self.origin;
-                }
-
-                const l = length(vec);
-                return if (l != 0.0) vec.scale(1.0 / l) else Self.origin;
+                const d = Self.dot(vec, vec);
+                return if (d != 0.0) vec.muls(exponential.inversesqrt(d)) else Self.origin;
             }
 
             /// The refract function returns a vector that points in the direction of refraction.
@@ -585,7 +625,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
                 const d = Self.dot(norm, inc);
                 const k = 1.0 - eta * eta * (1.0 - d * d);
 
-                if (k >= 0.0) return Self.origin;
+                if (k < 0.0) return Self.origin;
 
                 const sqrtk = @sqrt(k);
                 var res: Self = undefined;
@@ -598,7 +638,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn floor(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @floor(@field(vec, fld.name));
+                    @field(res, fld.name) = common.floor(@field(vec, fld.name));
                 return res;
             }
 
@@ -606,7 +646,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn ceil(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @ceil(@field(vec, fld.name));
+                    @field(res, fld.name) = common.ceil(@field(vec, fld.name));
                 return res;
             }
 
@@ -614,7 +654,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn fract(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @field(vec, fld.name) - @floor(@field(vec, fld.name));
+                    @field(res, fld.name) = common.fract(@field(vec, fld.name));
                 return res;
             }
 
@@ -622,17 +662,17 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn mix(a: Self, b: Self, m: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = (@field(a, fld.name) * (1.0 - @field(m, fld.name))) + (@field(b, fld.name) * @field(m, fld.name));
+                    @field(res, fld.name) = common.mix(@field(a, fld.name), @field(b, fld.name), @field(m, fld.name));
                 return res;
             }
 
             /// Performs component-wise linear blend calculation of a[i] and b[i], i.e. (a[i] * (1 - m)) + (b[i] * m).
             ///
             /// This is variation of the mix function where the third parameter is always a scalar.
-            pub fn mixf(a: Self, b: Self, scalar: Real) Self {
+            pub fn mixs(a: Self, b: Self, scalar: Real) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = (@field(a, fld.name) * (1.0 - scalar)) + (@field(b, fld.name) * scalar);
+                    @field(res, fld.name) = common.mix(@field(a, fld.name), @field(b, fld.name), scalar);
                 return res;
             }
 
@@ -640,12 +680,10 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             ///
             /// The smoothstep function returns 0 if vec[i] is smaller then edge0[i] and 1 if vec[i] is larger than edge1[i].
             /// Otherwise the return value is interpolated between 0 and 1 using Hermite polynomials.
-            pub fn smoothstep(vec: Self, edge0: Self, edge1: Self) Self {
+            pub fn smoothstep(edge0: Self, edge1: Self, vec: Self) Self {
                 var res: Self = undefined;
-                inline for (@typeInfo(Self).Struct.fields) |fld| {
-                    var tmp: Real = @min(@max((@field(vec, fld.name) - @field(edge0, fld.name)) / (@field(edge1, fld.name) - @field(edge0, fld.name)), 0.0), 1.0);
-                    @field(res, fld.name) = tmp * tmp * (3.0 - 2.0 * tmp);
-                }
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = common.smoothstep(@field(edge0, fld.name), @field(edge1, fld.name), @field(vec, fld.name));
                 return res;
             }
 
@@ -655,12 +693,10 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             ///
             /// The smoothstep function returns 0 if vec[i] is smaller then edge0[i] and 1 if vec[i] is larger than edge1[i].
             /// Otherwise the return value is interpolated between 0 and 1 using Hermite polynomials.
-            pub fn smoothstepf(vec: Self, edge0: Real, edge1: Real) Self {
+            pub fn smoothsteps(edge0: Real, edge1: Real, vec: Self) Self {
                 var res: Self = undefined;
-                inline for (@typeInfo(Self).Struct.fields) |fld| {
-                    var tmp: Real = @min(@max((@field(vec, fld.name) - edge0) / (edge1 - edge0), 0.0), 1.0);
-                    @field(res, fld.name) = tmp * tmp * (3.0 - 2.0 * tmp);
-                }
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = common.smoothstep(edge0, edge1, @field(vec, fld.name));
                 return res;
             }
 
@@ -684,7 +720,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn radians(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = common.radians(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.radians(@field(vec, fld.name));
                 return res;
             }
 
@@ -692,7 +728,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn degrees(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = common.degrees(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.degrees(@field(vec, fld.name));
                 return res;
             }
 
@@ -700,7 +736,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn sin(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @sin(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.sin(@field(vec, fld.name));
                 return res;
             }
 
@@ -708,7 +744,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn cos(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @cos(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.cos(@field(vec, fld.name));
                 return res;
             }
 
@@ -716,7 +752,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn tan(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @tan(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.tan(@field(vec, fld.name));
                 return res;
             }
 
@@ -724,7 +760,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn asin(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = std.math.asin(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.asin(@field(vec, fld.name));
                 return res;
             }
 
@@ -732,7 +768,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn acos(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = std.math.acos(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.acos(@field(vec, fld.name));
                 return res;
             }
 
@@ -740,7 +776,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn atan(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = std.math.atan(@field(vec, fld.name));
+                    @field(res, fld.name) = trigonometric.atan(@field(vec, fld.name));
                 return res;
             }
 
@@ -748,7 +784,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn exp(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @exp(@field(vec, fld.name));
+                    @field(res, fld.name) = exponential.exp(@field(vec, fld.name));
                 return res;
             }
 
@@ -756,7 +792,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn log(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @log(@field(vec, fld.name));
+                    @field(res, fld.name) = exponential.log(@field(vec, fld.name));
                 return res;
             }
 
@@ -764,7 +800,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn exp2(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @exp2(@field(vec, fld.name));
+                    @field(res, fld.name) = exponential.exp2(@field(vec, fld.name));
                 return res;
             }
 
@@ -772,7 +808,7 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn log2(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @log2(@field(vec, fld.name));
+                    @field(res, fld.name) = exponential.log2(@field(vec, fld.name));
                 return res;
             }
 
@@ -780,15 +816,17 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
             pub fn sqrt(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = @sqrt(@field(vec, fld.name));
+                    @field(res, fld.name) = exponential.sqrt(@field(vec, fld.name));
                 return res;
             }
 
             /// Performs component-wise application of 1 / builtin @sqrt function.
+            ///
+            /// In case of vector of f32 types, performs qrsqrt (Quake 3 Fast Inverse Sqrt Algorithm).
             pub fn inversesqrt(vec: Self) Self {
                 var res: Self = undefined;
                 inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = if (comptime concept.isFloatingPoint32(Real)) common.qrsqrt(@field(vec, fld.name)) else 1 / @sqrt(@field(vec, fld.name));
+                    @field(res, fld.name) = exponential.inversesqrt(@field(vec, fld.name));
                 return res;
             }
         }
@@ -810,6 +848,7 @@ fn VecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: t
         pub usingnamespace NumericVec3Mixin(Self, Dimens, Real);
         pub usingnamespace NumericVec4Mixin(Self, Dimens, Real);
 
+        pub usingnamespace SignedNumericVec3Mixin(Self, Dimens, Real);
         pub usingnamespace SignedNumericVecMixin(Self, Dimens, Real);
 
         pub usingnamespace BooleanVecMixin(Self, Dimens, Real);
