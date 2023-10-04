@@ -4,7 +4,6 @@ const common = @import("common.zig");
 const exponential = @import("exponential.zig");
 const geometric = @import("geometric.zig");
 const trigonometric = @import("trigonometric.zig");
-const testing = std.testing;
 
 const TypeHelper = struct {
     fn BoolVecTypeFromVecType(comptime Type: type) type {
@@ -63,8 +62,13 @@ fn ArithmeticVec4Mixin(comptime Self: type, comptime Dimens: comptime_int, compt
 fn ArithmeticVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
     return if (concept.isArithmetic(Real))
         struct {
+            pub const size_type = comptime_int;
+            pub const real_type = Real;
+
             /// Number of dimensions that vector has.
             pub const dimens = Dimens;
+
+            pub const vec_type = Self;
 
             fn zeroForArithmeticType(comptime Type: type) Type {
                 return if (concept.isBoolean(Type)) false else 0;
@@ -163,6 +167,18 @@ fn ArithmeticVecMixin(comptime Self: type, comptime Dimens: comptime_int, compti
                     @compileError("Vec.getAt: 'idx' value out of range - 'idx' value should be in range 0...dimens - 1");
 
                 return @field(vec, @typeInfo(Self).Struct.fields[idx].name);
+            }
+
+            pub fn at(vec: Self, comptime idx: comptime_int) Real {
+                return vec.getAt(idx);
+            }
+
+            pub fn row(vec: Self, comptime idx: comptime_int) Real {
+                return vec.getAt(idx);
+            }
+
+            pub fn col(vec: Self, comptime idx: comptime_int) Real {
+                return vec.getAt(idx);
             }
 
             /// Sets value at zero based index position to provided value.
@@ -848,8 +864,8 @@ fn VecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: t
         pub usingnamespace NumericVec3Mixin(Self, Dimens, Real);
         pub usingnamespace NumericVec4Mixin(Self, Dimens, Real);
 
-        pub usingnamespace SignedNumericVec3Mixin(Self, Dimens, Real);
         pub usingnamespace SignedNumericVecMixin(Self, Dimens, Real);
+        pub usingnamespace SignedNumericVec3Mixin(Self, Dimens, Real);
 
         pub usingnamespace BooleanVecMixin(Self, Dimens, Real);
 
@@ -860,7 +876,7 @@ fn VecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: t
 pub fn Vec1(comptime Real: type) type {
     concept.arithmetic(Real);
 
-    return packed struct {
+    return extern struct {
         pub usingnamespace VecMixin(Self, 1, Real);
 
         const Self = @This();
@@ -872,7 +888,7 @@ pub fn Vec1(comptime Real: type) type {
 pub fn Vec2(comptime Real: type) type {
     concept.arithmetic(Real);
 
-    return packed struct {
+    return extern struct {
         pub usingnamespace VecMixin(Self, 2, Real);
 
         const Self = @This();
@@ -885,7 +901,7 @@ pub fn Vec2(comptime Real: type) type {
 pub fn Vec3(comptime Real: type) type {
     concept.arithmetic(Real);
 
-    return packed struct {
+    return extern struct {
         pub usingnamespace VecMixin(Self, 3, Real);
 
         const Self = @This();
@@ -899,7 +915,7 @@ pub fn Vec3(comptime Real: type) type {
 pub fn Vec4(comptime Real: type) type {
     concept.arithmetic(Real);
 
-    return packed struct {
+    return extern struct {
         pub usingnamespace VecMixin(Self, 4, Real);
 
         const Self = @This();
@@ -917,6 +933,6 @@ pub fn Vec(comptime Dimens: comptime_int, comptime Real: type) type {
         2 => Vec2(Real),
         3 => Vec3(Real),
         4 => Vec4(Real),
-        else => @compileError("Vec: invalid 'len' value - should be in range 1...4"),
+        else => @compileError("Vec: invalid 'Dimens' value - should be in range 1...4"),
     };
 }

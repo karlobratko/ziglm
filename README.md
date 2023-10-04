@@ -8,10 +8,12 @@ ZiGLM is a Zig language mathematics library for graphics software based on the O
 
 ## 1. Design approach
 
-Every functionallity wich is bound to some structure is implemented with **unique** pattern (*I haven't found it anywhere on the Internet so I don't know how to call it - please help if found*). 
+Every functionallity wich is bound to some structure is implemented with **X** pattern (*I haven't found it anywhere on the Internet so I don't know how to call it - please help if found*). 
 Basically, every method is bound to specific mixin which in compile time checks type which is stored in structure and provides only methods for that type. This is implemented by using compile time checks inside mixin methods which on failed check return empty struct, and on match return struct with methods. This structs are then embedded in main mixin using `usingnamespace` keyword. This not only gives us type safety, but totally disables usage of methods which are not intended for that type.
 
 Except for type checking this pattern gives us ability to check for other compile time parameters also, and provide specialised methods for those properties of type, e.g. cross product method, which should be only accessible to 3 dimensional vectors of any numeric type.
+
+This pattern can get a little bit messy, but with quality naming conventions and mixin method ordering we are able to create reusable and manageable code.
 
 ## 2. Features
 
