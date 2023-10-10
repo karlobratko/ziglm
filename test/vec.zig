@@ -725,7 +725,7 @@ test "Vec.swizzle(...)" {
     try testing.expect(vec4bool_swizzle4.x == false and vec4bool_swizzle4.y == true and vec4bool_swizzle4.z == false and vec4bool_swizzle4.w == true);
 }
 
-test "Vec.getAt(...)" {
+test "Vec.getAt/at/row/col(...)" {
     const vec1f32 = Vec1(f32).new(1);
     try testing.expect(vec1f32.getAt(0) == 1);
 
