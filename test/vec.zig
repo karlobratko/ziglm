@@ -1599,7 +1599,7 @@ test "Vec.min(...)" {
     const vec3f32_min = Vec3(f32).new(1, -0.5, 0.5).min(Vec3(f32).new(-1.5, 2.5, 0.5));
     try testing.expect(vec3f32_min.x == -1.5 and vec3f32_min.y == -0.5 and vec3f32_min.z == 0.5);
 
-    const vec4f32_min = Vec4(f32).new(1, -0.5, 0.5, -0).min(Vec4(f32).new(-1.5, 2.5, 0.5, 0));
+    const vec4f32_min = Vec4(f32).new(1, -0.5, 0.5, 0).min(Vec4(f32).new(-1.5, 2.5, 0.5, 0));
     try testing.expect(vec4f32_min.x == -1.5 and vec4f32_min.y == -0.5 and vec4f32_min.z == 0.5 and vec4f32_min.w == 0);
 
     const vec1i32_min = Vec1(i32).new(1).min(Vec1(i32).new(-1));
@@ -1637,7 +1637,7 @@ test "Vec.mins(...)" {
     const vec3f32_mins = Vec3(f32).new(1, -0.5, 0.5).mins(0.75);
     try testing.expect(vec3f32_mins.x == 0.75 and vec3f32_mins.y == -0.5 and vec3f32_mins.z == 0.5);
 
-    const vec4f32_mins = Vec4(f32).new(1, -0.5, 0.5, -0).mins(0);
+    const vec4f32_mins = Vec4(f32).new(1, -0.5, 0.5, 0).mins(0);
     try testing.expect(vec4f32_mins.x == 0 and vec4f32_mins.y == -0.5 and vec4f32_mins.z == 0 and vec4f32_mins.w == 0);
 
     const vec1i32_mins = Vec1(i32).new(1).mins(-1);
@@ -1675,7 +1675,7 @@ test "Vec.max(...)" {
     const vec3f32_max = Vec3(f32).new(1, -0.5, 0.5).max(Vec3(f32).new(-1.5, 2.5, 0.5));
     try testing.expect(vec3f32_max.x == 1 and vec3f32_max.y == 2.5 and vec3f32_max.z == 0.5);
 
-    const vec4f32_max = Vec4(f32).new(1, -0.5, 0.5, -0).max(Vec4(f32).new(-1.5, 2.5, 0.5, 0));
+    const vec4f32_max = Vec4(f32).new(1, -0.5, 0.5, 0).max(Vec4(f32).new(-1.5, 2.5, 0.5, 0));
     try testing.expect(vec4f32_max.x == 1 and vec4f32_max.y == 2.5 and vec4f32_max.z == 0.5 and vec4f32_max.w == 0);
 
     const vec1i32_max = Vec1(i32).new(1).max(Vec1(i32).new(-1));
@@ -1713,7 +1713,7 @@ test "Vec.maxs(...)" {
     const vec3f32_maxs = Vec3(f32).new(1, -0.5, 0.5).maxs(0.75);
     try testing.expect(vec3f32_maxs.x == 1 and vec3f32_maxs.y == 0.75 and vec3f32_maxs.z == 0.75);
 
-    const vec4f32_maxs = Vec4(f32).new(1, -0.5, 0.5, -0).maxs(0);
+    const vec4f32_maxs = Vec4(f32).new(1, -0.5, 0.5, 0).maxs(0);
     try testing.expect(vec4f32_maxs.x == 1 and vec4f32_maxs.y == 0 and vec4f32_maxs.z == 0.5 and vec4f32_maxs.w == 0);
 
     const vec1i32_maxs = Vec1(i32).new(1).maxs(-1);

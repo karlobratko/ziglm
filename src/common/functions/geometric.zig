@@ -1,28 +1,29 @@
 const std = @import("std");
-const concept = @import("concept.zig");
-const common = @import("common.zig");
 
-pub fn length(val: anytype) @TypeOf(val) {
+const common = @import("common.zig");
+const concept = @import("../concept.zig");
+
+pub inline fn length(val: anytype) @TypeOf(val) {
     return common.abs(val);
 }
 
-pub fn distance(a: anytype, b: @TypeOf(a)) @TypeOf(a) {
+pub inline fn distance(a: anytype, b: @TypeOf(a)) @TypeOf(a) {
     return length(a - b);
 }
 
-pub fn dot(a: anytype, b: @TypeOf(a)) @TypeOf(a) {
+pub inline fn dot(a: anytype, b: @TypeOf(a)) @TypeOf(a) {
     return a * b;
 }
 
-pub fn normalize(val: anytype) @TypeOf(val) {
+pub inline fn normalize(val: anytype) @TypeOf(val) {
     return 1.0;
 }
 
-pub fn faceforward(ori: anytype, inc: @TypeOf(ori), ref: @TypeOf(ori)) @TypeOf(ori) {
+pub inline fn faceforward(ori: anytype, inc: @TypeOf(ori), ref: @TypeOf(ori)) @TypeOf(ori) {
     return if (dot(ref, inc) < 0) ori else -ori;
 }
 
-pub fn reflect(inc: anytype, norm: @TypeOf(inc)) @TypeOf(inc) {
+pub inline fn reflect(inc: anytype, norm: @TypeOf(inc)) @TypeOf(inc) {
     return inc - (norm * dot(norm, inc) * 2);
 }
 

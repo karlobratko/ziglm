@@ -1,9 +1,11 @@
 const std = @import("std");
-const concept = @import("concept.zig");
-const common = @import("common.zig");
-const exponential = @import("exponential.zig");
-const geometric = @import("geometric.zig");
-const trigonometric = @import("trigonometric.zig");
+const math = std.math;
+
+const common = @import("../../common/functions/common.zig");
+const concept = @import("../../common/concept.zig");
+const exponential = @import("../../common/functions/exponential.zig");
+const geometric = @import("../../common/functions/geometric.zig");
+const trigonometric = @import("../../common/functions/trigonometric.zig");
 
 const TypeHelper = struct {
     fn BoolVecTypeFromVecType(comptime Type: type) type {
@@ -16,7 +18,7 @@ fn ArithmeticVec1Mixin(comptime Self: type, comptime Dimens: comptime_int, compt
         struct {
             /// Initialises every field of vector separately.
             pub fn new(x: Real) Self {
-                return Self{ .x = x };
+                return .{ .x = x };
             }
         }
     else
@@ -28,7 +30,7 @@ fn ArithmeticVec2Mixin(comptime Self: type, comptime Dimens: comptime_int, compt
         struct {
             /// Initialises every field of vector separately.
             pub fn new(x: Real, y: Real) Self {
-                return Self{ .x = x, .y = y };
+                return .{ .x = x, .y = y };
             }
         }
     else
@@ -40,7 +42,7 @@ fn ArithmeticVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, compt
         struct {
             /// Initialises every field of vector separately.
             pub fn new(x: Real, y: Real, z: Real) Self {
-                return Self{ .x = x, .y = y, .z = z };
+                return .{ .x = x, .y = y, .z = z };
             }
         }
     else
@@ -52,7 +54,7 @@ fn ArithmeticVec4Mixin(comptime Self: type, comptime Dimens: comptime_int, compt
         struct {
             /// Initialises every field of vector separately.
             pub fn new(x: Real, y: Real, z: Real, w: Real) Self {
-                return Self{ .x = x, .y = y, .z = z, .w = w };
+                return .{ .x = x, .y = y, .z = z, .w = w };
             }
         }
     else
@@ -540,7 +542,7 @@ fn SignedNumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, co
             /// Returns the cross product of the two input parameters, i.e. a vector that is perpendicular to the plane
             /// containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span.
             pub fn cross(a: Self, b: Self) Self {
-                return Self{ .x = a.y * b.z - a.z * b.y, .y = a.z * b.x - a.x * b.z, .z = a.x * b.y - a.y * b.x };
+                return .{ .x = a.y * b.z - a.z * b.y, .y = a.z * b.x - a.x * b.z, .z = a.x * b.y - a.y * b.x };
             }
         }
     else
@@ -718,18 +720,18 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
 
             /// Performs component-wise std.math.approxEqAbs operation and returns bool.
             pub fn approxEqAbs(a: Self, b: Self, tolerance: Real) bool {
-                inline for (@typeInfo(Self).Struct.fields) |fld|
-                    if (!std.math.approxEqAbs(Real, @field(a, fld.name), @field(b, fld.name), tolerance))
-                        return false;
-                return true;
+                return inline for (@typeInfo(Self).Struct.fields) |fld| {
+                    if (!math.approxEqAbs(Real, @field(a, fld.name), @field(b, fld.name), tolerance))
+                        break false;
+                } else true;
             }
 
             /// Performs component-wise std.math.approxEqRel operation and returns bool.
             pub fn approxEqRel(a: Self, b: Self, tolerance: Real) bool {
-                inline for (@typeInfo(Self).Struct.fields) |fld|
-                    if (!std.math.approxEqRel(Real, @field(a, fld.name), @field(b, fld.name), tolerance))
-                        return false;
-                return true;
+                return inline for (@typeInfo(Self).Struct.fields) |fld| {
+                    if (!math.approxEqRel(Real, @field(a, fld.name), @field(b, fld.name), tolerance))
+                        break false;
+                } else true;
             }
 
             /// Performs component-wise conversion from degrees to radians and returns vector.
@@ -874,7 +876,7 @@ fn VecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: t
 }
 
 pub fn Vec1(comptime Real: type) type {
-    concept.arithmetic(Real);
+    concept.requireArithmetic(Real);
 
     return extern struct {
         pub usingnamespace VecMixin(Self, 1, Real);
@@ -886,7 +888,7 @@ pub fn Vec1(comptime Real: type) type {
 }
 
 pub fn Vec2(comptime Real: type) type {
-    concept.arithmetic(Real);
+    concept.requireArithmetic(Real);
 
     return extern struct {
         pub usingnamespace VecMixin(Self, 2, Real);
@@ -899,7 +901,7 @@ pub fn Vec2(comptime Real: type) type {
 }
 
 pub fn Vec3(comptime Real: type) type {
-    concept.arithmetic(Real);
+    concept.requireArithmetic(Real);
 
     return extern struct {
         pub usingnamespace VecMixin(Self, 3, Real);
@@ -913,7 +915,7 @@ pub fn Vec3(comptime Real: type) type {
 }
 
 pub fn Vec4(comptime Real: type) type {
-    concept.arithmetic(Real);
+    concept.requireArithmetic(Real);
 
     return extern struct {
         pub usingnamespace VecMixin(Self, 4, Real);
