@@ -13,65 +13,9 @@ const TypeHelper = struct {
     }
 };
 
-fn ArithmeticVec1Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 1 and concept.isArithmetic(Real))
-        struct {
-            /// Initialises every field of vector separately.
-            pub fn new(x: Real) Self {
-                return .{ .x = x };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticVec2Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 2 and concept.isArithmetic(Real))
-        struct {
-            /// Initialises every field of vector separately.
-            pub fn new(x: Real, y: Real) Self {
-                return .{ .x = x, .y = y };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 3 and concept.isArithmetic(Real))
-        struct {
-            /// Initialises every field of vector separately.
-            pub fn new(x: Real, y: Real, z: Real) Self {
-                return .{ .x = x, .y = y, .z = z };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticVec4Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 4 and concept.isArithmetic(Real))
-        struct {
-            /// Initialises every field of vector separately.
-            pub fn new(x: Real, y: Real, z: Real, w: Real) Self {
-                return .{ .x = x, .y = y, .z = z, .w = w };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+fn ArithmeticVecMixin(comptime Self: type, comptime Real: type) type {
     return if (concept.isArithmetic(Real))
         struct {
-            pub const size_type = comptime_int;
-            pub const real_type = Real;
-
-            /// Number of dimensions that vector has.
-            pub const dimens = Dimens;
-
-            pub const vec_type = Self;
-
             fn zeroForArithmeticType(comptime Type: type) Type {
                 return if (concept.isBoolean(Type)) false else 0;
             }
@@ -165,7 +109,7 @@ fn ArithmeticVecMixin(comptime Self: type, comptime Dimens: comptime_int, compti
 
             /// Gets value at zero based index position.
             pub fn getAt(vec: Self, comptime idx: comptime_int) Real {
-                if (idx < 0 or idx >= dimens)
+                if (idx < 0 or idx >= Self.dimens)
                     @compileError("Vec.getAt: 'idx' value out of range - 'idx' value should be in range 0...dimens - 1");
 
                 return @field(vec, @typeInfo(Self).Struct.fields[idx].name);
@@ -185,7 +129,7 @@ fn ArithmeticVecMixin(comptime Self: type, comptime Dimens: comptime_int, compti
 
             /// Sets value at zero based index position to provided value.
             pub fn setAt(vec: *Self, comptime idx: comptime_int, val: Real) void {
-                if (idx < 0 or idx >= dimens)
+                if (idx < 0 or idx >= Self.dimens)
                     @compileError("Vec.setAt: 'idx' value out of range - 'idx' value should be in range 0...dimens - 1");
 
                 @field(vec, @typeInfo(Self).Struct.fields[idx].name) = val;
@@ -219,96 +163,55 @@ fn ArithmeticVecMixin(comptime Self: type, comptime Dimens: comptime_int, compti
         struct {};
 }
 
-fn BooleanVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    _ = Dimens;
-    return if (concept.isBoolean(Real))
+fn ArithmeticVec1Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 1 and concept.isArithmetic(Real))
         struct {
-            /// Checks whether any component of vector is 'true' and returns boolean.
-            pub fn any(vec: Self) bool {
-                return inline for (@typeInfo(Self).Struct.fields) |fld| {
-                    if (@field(vec, fld.name)) break true;
-                } else false;
-            }
-
-            /// Checks whether all components of vector are 'true' and returns boolean.
-            pub fn all(vec: Self) bool {
-                return inline for (@typeInfo(Self).Struct.fields) |fld| {
-                    if (!@field(vec, fld.name)) break false;
-                } else true;
-            }
-
-            /// Performs component-wise logical complement operation and returns boolean vector.
-            pub fn not(vec: Self) TypeHelper.BoolVecTypeFromVecType(Self) {
-                var res: TypeHelper.BoolVecTypeFromVecType(Self) = undefined;
-                inline for (@typeInfo(Self).Struct.fields) |fld|
-                    @field(res, fld.name) = !@field(vec, fld.name);
-                return res;
+            /// Initialises every field of vector separately.
+            pub fn new(x: Real) Self {
+                return .{ .x = x };
             }
         }
     else
         struct {};
 }
 
-fn NumericVec1Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 1 and concept.isNumeric(Real))
+fn ArithmeticVec2Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 2 and concept.isArithmetic(Real))
         struct {
-            /// 1D vector representing unit on X axis.
-            pub const unit_x = Self.new(1);
+            /// Initialises every field of vector separately.
+            pub fn new(x: Real, y: Real) Self {
+                return .{ .x = x, .y = y };
+            }
         }
     else
         struct {};
 }
 
-fn NumericVec2Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 2 and concept.isNumeric(Real))
+fn ArithmeticVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 3 and concept.isArithmetic(Real))
         struct {
-            /// 2D vector representing unit on X axis.
-            pub const unit_x = Self.new(1, 0);
-
-            /// 2D vector representing unit on Y axis.
-            pub const unit_y = Self.new(0, 1);
+            /// Initialises every field of vector separately.
+            pub fn new(x: Real, y: Real, z: Real) Self {
+                return .{ .x = x, .y = y, .z = z };
+            }
         }
     else
         struct {};
 }
 
-fn NumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 3 and concept.isNumeric(Real))
+fn ArithmeticVec4Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 4 and concept.isArithmetic(Real))
         struct {
-            /// 3D vector representing unit on X axis.
-            pub const unit_x = Self.new(1, 0, 0);
-
-            /// 3D vector representing unit on Y axis.
-            pub const unit_y = Self.new(0, 1, 0);
-
-            /// 3D vector representing unit on Z axis.
-            pub const unit_z = Self.new(0, 0, 1);
+            /// Initialises every field of vector separately.
+            pub fn new(x: Real, y: Real, z: Real, w: Real) Self {
+                return .{ .x = x, .y = y, .z = z, .w = w };
+            }
         }
     else
         struct {};
 }
 
-fn NumericVec4Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 4 and concept.isNumeric(Real))
-        struct {
-            /// 4D vector representing unit on X axis.
-            pub const unit_x = Self.new(1, 0, 0, 0);
-
-            /// 4D vector representing unit on Y axis.
-            pub const unit_y = Self.new(0, 1, 0, 0);
-
-            /// 4D vector representing unit on Z axis.
-            pub const unit_z = Self.new(0, 0, 1, 0);
-
-            /// 4D vector representing unit on W axis.
-            pub const unit_w = Self.new(0, 0, 0, 1);
-        }
-    else
-        struct {};
-}
-
-fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    _ = Dimens;
+fn NumericVecMixin(comptime Self: type, comptime Real: type) type {
     return if (concept.isNumeric(Real))
         struct {
             /// Vector representing origin of the Cartesian coordinate system.
@@ -536,21 +439,65 @@ fn NumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime 
         struct {};
 }
 
-fn SignedNumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    return if (Dimens == 3 and concept.isSignedNumeric(Real))
+fn NumericVec1Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 1 and concept.isNumeric(Real))
         struct {
-            /// Returns the cross product of the two input parameters, i.e. a vector that is perpendicular to the plane
-            /// containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span.
-            pub fn cross(a: Self, b: Self) Self {
-                return .{ .x = a.y * b.z - a.z * b.y, .y = a.z * b.x - a.x * b.z, .z = a.x * b.y - a.y * b.x };
-            }
+            /// 1D vector representing unit on X axis.
+            pub const unit_x = Self.new(1);
         }
     else
         struct {};
 }
 
-fn SignedNumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    _ = Dimens;
+fn NumericVec2Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 2 and concept.isNumeric(Real))
+        struct {
+            /// 2D vector representing unit on X axis.
+            pub const unit_x = Self.new(1, 0);
+
+            /// 2D vector representing unit on Y axis.
+            pub const unit_y = Self.new(0, 1);
+        }
+    else
+        struct {};
+}
+
+fn NumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 3 and concept.isNumeric(Real))
+        struct {
+            /// 3D vector representing unit on X axis.
+            pub const unit_x = Self.new(1, 0, 0);
+
+            /// 3D vector representing unit on Y axis.
+            pub const unit_y = Self.new(0, 1, 0);
+
+            /// 3D vector representing unit on Z axis.
+            pub const unit_z = Self.new(0, 0, 1);
+        }
+    else
+        struct {};
+}
+
+fn NumericVec4Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 4 and concept.isNumeric(Real))
+        struct {
+            /// 4D vector representing unit on X axis.
+            pub const unit_x = Self.new(1, 0, 0, 0);
+
+            /// 4D vector representing unit on Y axis.
+            pub const unit_y = Self.new(0, 1, 0, 0);
+
+            /// 4D vector representing unit on Z axis.
+            pub const unit_z = Self.new(0, 0, 1, 0);
+
+            /// 4D vector representing unit on W axis.
+            pub const unit_w = Self.new(0, 0, 0, 1);
+        }
+    else
+        struct {};
+}
+
+fn SignedNumericVecMixin(comptime Self: type, comptime Real: type) type {
     return if (concept.isSignedNumeric(Real))
         struct {
             /// Performs component-wise absolute value calculation and returns vector.
@@ -596,8 +543,20 @@ fn SignedNumericVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
         struct {};
 }
 
-fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
-    _ = Dimens;
+fn SignedNumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
+    return if (Dimens == 3 and concept.isSignedNumeric(Real))
+        struct {
+            /// Returns the cross product of the two input parameters, i.e. a vector that is perpendicular to the plane
+            /// containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span.
+            pub fn cross(a: Self, b: Self) Self {
+                return .{ .x = a.y * b.z - a.z * b.y, .y = a.z * b.x - a.x * b.z, .z = a.x * b.y - a.y * b.x };
+            }
+        }
+    else
+        struct {};
+}
+
+fn FloatingPointVecMixin(comptime Self: type, comptime Real: type) type {
     return if (concept.isFloatingPoint(Real))
         struct {
             /// Performs component-wise division and returns vector.
@@ -852,26 +811,61 @@ fn FloatingPointVecMixin(comptime Self: type, comptime Dimens: comptime_int, com
         struct {};
 }
 
+fn BooleanVecMixin(comptime Self: type, comptime Real: type) type {
+    return if (concept.isBoolean(Real))
+        struct {
+            /// Checks whether any component of vector is 'true' and returns boolean.
+            pub fn any(vec: Self) bool {
+                return inline for (@typeInfo(Self).Struct.fields) |fld| {
+                    if (@field(vec, fld.name)) break true;
+                } else false;
+            }
+
+            /// Checks whether all components of vector are 'true' and returns boolean.
+            pub fn all(vec: Self) bool {
+                return inline for (@typeInfo(Self).Struct.fields) |fld| {
+                    if (!@field(vec, fld.name)) break false;
+                } else true;
+            }
+
+            /// Performs component-wise logical complement operation and returns boolean vector.
+            pub fn not(vec: Self) TypeHelper.BoolVecTypeFromVecType(Self) {
+                var res: TypeHelper.BoolVecTypeFromVecType(Self) = undefined;
+                inline for (@typeInfo(Self).Struct.fields) |fld|
+                    @field(res, fld.name) = !@field(vec, fld.name);
+                return res;
+            }
+        }
+    else
+        struct {};
+}
+
 fn VecMixin(comptime Self: type, comptime Dimens: comptime_int, comptime Real: type) type {
     return struct {
-        pub usingnamespace ArithmeticVecMixin(Self, Dimens, Real);
+        pub const size_type = comptime_int;
+        pub const real_type = Real;
+        pub const vec_type = Self;
+
+        pub const dimens = Dimens;
+
+        pub usingnamespace ArithmeticVecMixin(Self, Real);
         pub usingnamespace ArithmeticVec1Mixin(Self, Dimens, Real);
         pub usingnamespace ArithmeticVec2Mixin(Self, Dimens, Real);
         pub usingnamespace ArithmeticVec3Mixin(Self, Dimens, Real);
         pub usingnamespace ArithmeticVec4Mixin(Self, Dimens, Real);
 
-        pub usingnamespace NumericVecMixin(Self, Dimens, Real);
+        pub usingnamespace NumericVecMixin(Self, Real);
         pub usingnamespace NumericVec1Mixin(Self, Dimens, Real);
         pub usingnamespace NumericVec2Mixin(Self, Dimens, Real);
         pub usingnamespace NumericVec3Mixin(Self, Dimens, Real);
         pub usingnamespace NumericVec4Mixin(Self, Dimens, Real);
 
-        pub usingnamespace SignedNumericVecMixin(Self, Dimens, Real);
+        pub usingnamespace SignedNumericVecMixin(Self, Real);
         pub usingnamespace SignedNumericVec3Mixin(Self, Dimens, Real);
 
-        pub usingnamespace BooleanVecMixin(Self, Dimens, Real);
+        pub usingnamespace FloatingPointVecMixin(Self, Real);
 
-        pub usingnamespace FloatingPointVecMixin(Self, Dimens, Real);
+        pub usingnamespace BooleanVecMixin(Self, Real);
     };
 }
 
@@ -879,9 +873,7 @@ pub fn Vec1(comptime Real: type) type {
     concept.requireArithmetic(Real);
 
     return extern struct {
-        pub usingnamespace VecMixin(Self, 1, Real);
-
-        const Self = @This();
+        pub usingnamespace VecMixin(@This(), 1, Real);
 
         x: Real,
     };
@@ -891,9 +883,7 @@ pub fn Vec2(comptime Real: type) type {
     concept.requireArithmetic(Real);
 
     return extern struct {
-        pub usingnamespace VecMixin(Self, 2, Real);
-
-        const Self = @This();
+        pub usingnamespace VecMixin(@This(), 2, Real);
 
         x: Real,
         y: Real,
@@ -904,9 +894,7 @@ pub fn Vec3(comptime Real: type) type {
     concept.requireArithmetic(Real);
 
     return extern struct {
-        pub usingnamespace VecMixin(Self, 3, Real);
-
-        const Self = @This();
+        pub usingnamespace VecMixin(@This(), 3, Real);
 
         x: Real,
         y: Real,
@@ -918,9 +906,7 @@ pub fn Vec4(comptime Real: type) type {
     concept.requireArithmetic(Real);
 
     return extern struct {
-        pub usingnamespace VecMixin(Self, 4, Real);
-
-        const Self = @This();
+        pub usingnamespace VecMixin(@This(), 4, Real);
 
         x: Real,
         y: Real,

@@ -12,244 +12,9 @@ const TypeHelper = struct {
     }
 };
 
-fn ArithmeticMat2x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 2 and Rows == 2 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, x1: Real, y1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0 }, .{ .x = x1, .y = y1 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0 }, .{ .x = 0, .y = d1 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat2x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 2 and Rows == 3 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, z0: Real, x1: Real, y1: Real, z1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0 }, .{ .x = x1, .y = y1, .z = z1 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0 }, .{ .x = 0, .y = d1, .z = 0 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat2x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 2 and Rows == 4 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, z0: Real, w0: Real, x1: Real, y1: Real, z1: Real, w1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0, .w = w0 }, .{ .x = x1, .y = y1, .z = z1, .w = w1 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0, .w = 0 }, .{ .x = 0, .y = d1, .z = 0, .w = 0 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat3x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 3 and Rows == 2 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, x1: Real, y1: Real, x2: Real, y2: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0 }, .{ .x = x1, .y = y1 }, .{ .x = x2, .y = y2 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0 }, .{ .x = 0, .y = d1 }, .{ .x = 0, .y = 0 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat3x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 3 and Rows == 3 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, z0: Real, x1: Real, y1: Real, z1: Real, x2: Real, y2: Real, z2: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0 }, .{ .x = x1, .y = y1, .z = z1 }, .{ .x = x2, .y = y2, .z = z2 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real, d2: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0 }, .{ .x = 0, .y = d1, .z = 0 }, .{ .x = 0, .y = 0, .z = d2 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat3x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 3 and Rows == 4 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, z0: Real, w0: Real, x1: Real, y1: Real, z1: Real, w1: Real, x2: Real, y2: Real, z2: Real, w2: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0, .w = w0 }, .{ .x = x1, .y = y1, .z = z1, .w = w1 }, .{ .x = x2, .y = y2, .z = z2, .w = w2 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real, d2: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0, .w = 0 }, .{ .x = 0, .y = d1, .z = 0, .w = 0 }, .{ .x = 0, .y = 0, .z = d2, .w = 0 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat4x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 4 and Rows == 2 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, x1: Real, y1: Real, x2: Real, y2: Real, x3: Real, y3: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0 }, .{ .x = x1, .y = y1 }, .{ .x = x2, .y = y2 }, .{ .x = x3, .y = y3 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0 }, .{ .x = 0, .y = d1 }, .{ .x = 0, .y = 0 }, .{ .x = 0, .y = 0 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat4x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 4 and Rows == 3 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, z0: Real, x1: Real, y1: Real, z1: Real, x2: Real, y2: Real, z2: Real, x3: Real, y3: Real, z3: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0 }, .{ .x = x1, .y = y1, .z = z1 }, .{ .x = x2, .y = y2, .z = z2 }, .{ .x = x3, .y = y3, .z = z3 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real, d2: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0 }, .{ .x = 0, .y = d1, .z = 0 }, .{ .x = 0, .y = 0, .z = d2 }, .{ .x = 0, .y = 0, .z = 0 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat4x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return if (Cols == 4 and Rows == 4 and concept.isArithmetic(Real))
-        struct {
-            pub fn new(x0: Real, y0: Real, z0: Real, w0: Real, x1: Real, y1: Real, z1: Real, w1: Real, x2: Real, y2: Real, z2: Real, w2: Real, x3: Real, y3: Real, z3: Real, w3: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0, .w = w0 }, .{ .x = x1, .y = y1, .z = z1, .w = w1 }, .{ .x = x2, .y = y2, .z = z2, .w = w2 }, .{ .x = x3, .y = y3, .z = z3, .w = w3 } } };
-            }
-
-            pub fn diagonal(d0: Real, d1: Real, d2: Real, d3: Real) Self {
-                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0, .w = 0 }, .{ .x = 0, .y = d1, .z = 0, .w = 0 }, .{ .x = 0, .y = 0, .z = d2, .w = 0 }, .{ .x = 0, .y = 0, .z = 0, .w = d3 } } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat2xMMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Rows;
-    return if (Cols == 2 and concept.isArithmetic(Real))
-        struct {
-            pub fn cols(c0: Self.col_type, c1: Self.col_type) Self {
-                return .{ .cols = [_]Self.col_type{ c0, c1 } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat3xMMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Rows;
-    return if (Cols == 3 and concept.isArithmetic(Real))
-        struct {
-            pub fn cols(c0: Self.col_type, c1: Self.col_type, c2: Self.col_type) Self {
-                return .{ .cols = [_]Self.col_type{ c0, c1, c2 } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMat4xMMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Rows;
-    return if (Cols == 4 and concept.isArithmetic(Real))
-        struct {
-            pub fn cols(c0: Self.col_type, c1: Self.col_type, c2: Self.col_type, c3: Self.col_type) Self {
-                return .{ .cols = [_]Self.col_type{ c0, c1, c2, c3 } };
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMatNx2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Cols;
-    return if (Rows == 2 and concept.isArithmetic(Real))
-        struct {
-            pub fn rows(r0: Self.row_type, r1: Self.row_type) Self {
-                var res: Self = undefined;
-                inline for (0..Self.col_count) |cidx| {
-                    res.cols[cidx].x = r0.getAt(cidx);
-                    res.cols[cidx].y = r1.getAt(cidx);
-                }
-                return res;
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMatNx3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Cols;
-    return if (Rows == 3 and concept.isArithmetic(Real))
-        struct {
-            pub fn rows(r0: Self.row_type, r1: Self.row_type, r2: Self.row_type) Self {
-                var res: Self = undefined;
-                inline for (0..Self.col_count) |cidx| {
-                    res.cols[cidx].x = r0.getAt(cidx);
-                    res.cols[cidx].y = r1.getAt(cidx);
-                    res.cols[cidx].z = r2.getAt(cidx);
-                }
-                return res;
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMatNx4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Cols;
-    return if (Rows == 4 and concept.isArithmetic(Real))
-        struct {
-            pub fn rows(r0: Self.row_type, r1: Self.row_type, r2: Self.row_type, r3: Self.row_type) Self {
-                var res: Self = undefined;
-                inline for (0..Self.col_count) |cidx| {
-                    res.cols[cidx].x = r0.getAt(cidx);
-                    res.cols[cidx].y = r1.getAt(cidx);
-                    res.cols[cidx].z = r2.getAt(cidx);
-                    res.cols[cidx].w = r3.getAt(cidx);
-                }
-                return res;
-            }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMatMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+fn ArithmeticMatMixin(comptime Self: type, comptime Real: type) type {
     return if (concept.isArithmetic(Real))
         struct {
-            pub const size_type = comptime_int;
-            pub const real_type = Real;
-
-            pub const col_count = Cols;
-            pub const row_count = Rows;
-
-            pub const col_type = Vec(Rows, Real);
-            pub const row_type = Vec(Cols, Real);
-            pub const mat_type = Self;
-
             pub const identity = Self.scalar(1);
 
             fn zeroForArithmeticType(comptime Type: type) Type {
@@ -359,6 +124,394 @@ fn ArithmeticMatMixin(comptime Self: type, comptime Cols: comptime_int, comptime
         struct {};
 }
 
+fn ArithmeticMatNxNMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == Rows and concept.isArithmetic(Real))
+        struct {
+            // TODO: identity? Can we maybe remove diagonal on all mixins with NxN?
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat1xMMixin(comptime Self: type, comptime Cols: comptime_int, comptime Real: type) type {
+    return if (Cols == 1 and concept.isArithmetic(Real))
+        struct {
+            pub fn cols(c0: Self.col_type) Self {
+                return .{ .cols = [_]Self.col_type{c0} };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat2xMMixin(comptime Self: type, comptime Cols: comptime_int, comptime Real: type) type {
+    return if (Cols == 2 and concept.isArithmetic(Real))
+        struct {
+            pub fn cols(c0: Self.col_type, c1: Self.col_type) Self {
+                return .{ .cols = [_]Self.col_type{ c0, c1 } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat3xMMixin(comptime Self: type, comptime Cols: comptime_int, comptime Real: type) type {
+    return if (Cols == 3 and concept.isArithmetic(Real))
+        struct {
+            pub fn cols(c0: Self.col_type, c1: Self.col_type, c2: Self.col_type) Self {
+                return .{ .cols = [_]Self.col_type{ c0, c1, c2 } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat4xMMixin(comptime Self: type, comptime Cols: comptime_int, comptime Real: type) type {
+    return if (Cols == 4 and concept.isArithmetic(Real))
+        struct {
+            pub fn cols(c0: Self.col_type, c1: Self.col_type, c2: Self.col_type, c3: Self.col_type) Self {
+                return .{ .cols = [_]Self.col_type{ c0, c1, c2, c3 } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMatNx1Mixin(comptime Self: type, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Rows == 1 and concept.isArithmetic(Real))
+        struct {
+            pub fn rows(r0: Self.row_type) Self {
+                var res: Self = undefined;
+                inline for (0..Self.col_count) |cidx| {
+                    res.cols[cidx].x = r0.getAt(cidx);
+                }
+                return res;
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMatNx2Mixin(comptime Self: type, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Rows == 2 and concept.isArithmetic(Real))
+        struct {
+            pub fn rows(r0: Self.row_type, r1: Self.row_type) Self {
+                var res: Self = undefined;
+                inline for (0..Self.col_count) |cidx| {
+                    res.cols[cidx].x = r0.getAt(cidx);
+                    res.cols[cidx].y = r1.getAt(cidx);
+                }
+                return res;
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMatNx3Mixin(comptime Self: type, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Rows == 3 and concept.isArithmetic(Real))
+        struct {
+            pub fn rows(r0: Self.row_type, r1: Self.row_type, r2: Self.row_type) Self {
+                var res: Self = undefined;
+                inline for (0..Self.col_count) |cidx| {
+                    res.cols[cidx].x = r0.getAt(cidx);
+                    res.cols[cidx].y = r1.getAt(cidx);
+                    res.cols[cidx].z = r2.getAt(cidx);
+                }
+                return res;
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMatNx4Mixin(comptime Self: type, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Rows == 4 and concept.isArithmetic(Real))
+        struct {
+            pub fn rows(r0: Self.row_type, r1: Self.row_type, r2: Self.row_type, r3: Self.row_type) Self {
+                var res: Self = undefined;
+                inline for (0..Self.col_count) |cidx| {
+                    res.cols[cidx].x = r0.getAt(cidx);
+                    res.cols[cidx].y = r1.getAt(cidx);
+                    res.cols[cidx].z = r2.getAt(cidx);
+                    res.cols[cidx].w = r3.getAt(cidx);
+                }
+                return res;
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat1x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 1 and Rows == 1 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real) Self {
+                return .{ .cols = [_]Self.col_type{.{ .x = x0 }} };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat1x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 1 and Rows == 2 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real) Self {
+                return .{ .cols = [_]Self.col_type{.{ .x = x0, .y = y0 }} };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat1x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 1 and Rows == 3 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real) Self {
+                return .{ .cols = [_]Self.col_type{.{ .x = x0, .y = y0, .z = z0 }} };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat1x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 1 and Rows == 4 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real, w0: Real) Self {
+                return .{ .cols = [_]Self.col_type{.{ .x = x0, .y = y0, .z = z0, .w = w0 }} };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat2x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 2 and Rows == 1 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, x1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0 }, .{ .x = x1 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat2x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 2 and Rows == 2 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, x1: Real, y1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0 }, .{ .x = x1, .y = y1 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0 }, .{ .x = 0, .y = d1 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat2x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 2 and Rows == 3 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real, x1: Real, y1: Real, z1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0 }, .{ .x = x1, .y = y1, .z = z1 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0 }, .{ .x = 0, .y = d1, .z = 0 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat2x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 2 and Rows == 4 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real, w0: Real, x1: Real, y1: Real, z1: Real, w1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0, .w = w0 }, .{ .x = x1, .y = y1, .z = z1, .w = w1 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0, .w = 0 }, .{ .x = 0, .y = d1, .z = 0, .w = 0 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat3x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 3 and Rows == 1 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, x1: Real, x2: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0 }, .{ .x = x1 }, .{ .x = x2 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat3x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 3 and Rows == 2 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, x1: Real, y1: Real, x2: Real, y2: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0 }, .{ .x = x1, .y = y1 }, .{ .x = x2, .y = y2 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0 }, .{ .x = 0, .y = d1 }, .{ .x = 0, .y = 0 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat3x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 3 and Rows == 3 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real, x1: Real, y1: Real, z1: Real, x2: Real, y2: Real, z2: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0 }, .{ .x = x1, .y = y1, .z = z1 }, .{ .x = x2, .y = y2, .z = z2 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real, d2: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0 }, .{ .x = 0, .y = d1, .z = 0 }, .{ .x = 0, .y = 0, .z = d2 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat3x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 3 and Rows == 4 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real, w0: Real, x1: Real, y1: Real, z1: Real, w1: Real, x2: Real, y2: Real, z2: Real, w2: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0, .w = w0 }, .{ .x = x1, .y = y1, .z = z1, .w = w1 }, .{ .x = x2, .y = y2, .z = z2, .w = w2 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real, d2: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0, .w = 0 }, .{ .x = 0, .y = d1, .z = 0, .w = 0 }, .{ .x = 0, .y = 0, .z = d2, .w = 0 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat4x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 4 and Rows == 1 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, x1: Real, x2: Real, x3: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0 }, .{ .x = x1 }, .{ .x = x2 }, .{ .x = x3 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat4x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 4 and Rows == 2 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, x1: Real, y1: Real, x2: Real, y2: Real, x3: Real, y3: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0 }, .{ .x = x1, .y = y1 }, .{ .x = x2, .y = y2 }, .{ .x = x3, .y = y3 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0 }, .{ .x = 0, .y = d1 }, .{ .x = 0, .y = 0 }, .{ .x = 0, .y = 0 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat4x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 4 and Rows == 3 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real, x1: Real, y1: Real, z1: Real, x2: Real, y2: Real, z2: Real, x3: Real, y3: Real, z3: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0 }, .{ .x = x1, .y = y1, .z = z1 }, .{ .x = x2, .y = y2, .z = z2 }, .{ .x = x3, .y = y3, .z = z3 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real, d2: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0 }, .{ .x = 0, .y = d1, .z = 0 }, .{ .x = 0, .y = 0, .z = d2 }, .{ .x = 0, .y = 0, .z = 0 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn ArithmeticMat4x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    return if (Cols == 4 and Rows == 4 and concept.isArithmetic(Real))
+        struct {
+            pub fn new(x0: Real, y0: Real, z0: Real, w0: Real, x1: Real, y1: Real, z1: Real, w1: Real, x2: Real, y2: Real, z2: Real, w2: Real, x3: Real, y3: Real, z3: Real, w3: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = x0, .y = y0, .z = z0, .w = w0 }, .{ .x = x1, .y = y1, .z = z1, .w = w1 }, .{ .x = x2, .y = y2, .z = z2, .w = w2 }, .{ .x = x3, .y = y3, .z = z3, .w = w3 } } };
+            }
+
+            pub fn diagonal(d0: Real, d1: Real, d2: Real, d3: Real) Self {
+                return .{ .cols = [_]Self.col_type{ .{ .x = d0, .y = 0, .z = 0, .w = 0 }, .{ .x = 0, .y = d1, .z = 0, .w = 0 }, .{ .x = 0, .y = 0, .z = d2, .w = 0 }, .{ .x = 0, .y = 0, .z = 0, .w = d3 } } };
+            }
+        }
+    else
+        struct {};
+}
+
+fn NumericMatMixin(comptime Self: type, comptime Real: type) type {
+    _ = Self;
+    return if (concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
+fn NumericMatNxNMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == Rows and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
+fn NumericMat1x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == 1 and Rows == 1 and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
+fn NumericMat1x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == 1 and Rows == 2 and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
+fn NumericMat1x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == 1 and Rows == 3 and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
+fn NumericMat1x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == 1 and Rows == 4 and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
+fn NumericMat2x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == 2 and Rows == 1 and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
 fn NumericMat2x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
     _ = Self;
     return if (Cols == 2 and Rows == 2 and concept.isNumeric(Real))
@@ -378,6 +531,14 @@ fn NumericMat2x3Mixin(comptime Self: type, comptime Cols: comptime_int, comptime
 fn NumericMat2x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
     _ = Self;
     return if (Cols == 2 and Rows == 4 and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
+fn NumericMat3x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == 3 and Rows == 1 and concept.isNumeric(Real))
         struct {}
     else
         struct {};
@@ -407,6 +568,14 @@ fn NumericMat3x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime
         struct {};
 }
 
+fn NumericMat4x1Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
+    _ = Self;
+    return if (Cols == 4 and Rows == 1 and concept.isNumeric(Real))
+        struct {}
+    else
+        struct {};
+}
+
 fn NumericMat4x2Mixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
     _ = Self;
     return if (Cols == 4 and Rows == 2 and concept.isNumeric(Real))
@@ -431,190 +600,149 @@ fn NumericMat4x4Mixin(comptime Self: type, comptime Cols: comptime_int, comptime
         struct {};
 }
 
-fn NumericMatNxNMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Self;
-    return if (Cols == Rows and concept.isNumeric(Real))
-        struct {}
-    else
-        struct {};
-}
-
-fn NumericMatMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Rows;
-    _ = Cols;
-    _ = Self;
-    return if (concept.isNumeric(Real))
-        struct {}
-    else
-        struct {};
-}
-
 fn MatMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
     return struct {
-        pub usingnamespace ArithmeticMatMixin(Self, Cols, Rows, Real);
-        pub usingnamespace ArithmeticMat2xMMixin(Self, Cols, Rows, Real);
-        pub usingnamespace ArithmeticMat3xMMixin(Self, Cols, Rows, Real);
-        pub usingnamespace ArithmeticMat4xMMixin(Self, Cols, Rows, Real);
-        pub usingnamespace ArithmeticMatNx2Mixin(Self, Cols, Rows, Real);
-        pub usingnamespace ArithmeticMatNx3Mixin(Self, Cols, Rows, Real);
-        pub usingnamespace ArithmeticMatNx4Mixin(Self, Cols, Rows, Real);
+        pub const size_type = comptime_int;
+        pub const real_type = Real;
+        pub const mat_type = Self;
+
+        pub const col_count = Cols;
+        pub const row_count = Rows;
+
+        pub const col_type = Vec(Rows, Real);
+        pub const row_type = Vec(Cols, Real);
+
+        pub usingnamespace ArithmeticMatMixin(Self, Real);
+        pub usingnamespace ArithmeticMatNxNMixin(Self, Cols, Rows, Real);
+        pub usingnamespace ArithmeticMat1xMMixin(Self, Cols, Real);
+        pub usingnamespace ArithmeticMat2xMMixin(Self, Cols, Real);
+        pub usingnamespace ArithmeticMat3xMMixin(Self, Cols, Real);
+        pub usingnamespace ArithmeticMat4xMMixin(Self, Cols, Real);
+        pub usingnamespace ArithmeticMatNx1Mixin(Self, Rows, Real);
+        pub usingnamespace ArithmeticMatNx2Mixin(Self, Rows, Real);
+        pub usingnamespace ArithmeticMatNx3Mixin(Self, Rows, Real);
+        pub usingnamespace ArithmeticMatNx4Mixin(Self, Rows, Real);
+        pub usingnamespace ArithmeticMat1x1Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace ArithmeticMat1x2Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace ArithmeticMat1x3Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace ArithmeticMat1x4Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace ArithmeticMat2x1Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat2x2Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat2x3Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat2x4Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace ArithmeticMat3x1Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat3x2Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat3x3Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat3x4Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace ArithmeticMat4x1Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat4x2Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat4x3Mixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat4x4Mixin(Self, Cols, Rows, Real);
 
-        pub usingnamespace NumericMatMixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMatMixin(Self, Real);
         pub usingnamespace NumericMatNxNMixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMat1x1Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMat1x2Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMat1x3Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMat1x4Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMat2x1Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat2x2Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat2x3Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat2x4Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMat3x1Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat3x2Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat3x3Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat3x4Mixin(Self, Cols, Rows, Real);
+        pub usingnamespace NumericMat4x1Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat4x2Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat4x3Mixin(Self, Cols, Rows, Real);
         pub usingnamespace NumericMat4x4Mixin(Self, Cols, Rows, Real);
     };
 }
 
-pub fn Mat2x2(comptime Real: type) type {
+pub fn Mat(comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
     concept.requireArithmetic(Real);
 
+    if (Cols < 1 or Cols > 4)
+        @compileError("Mat: invalid 'Cols' value - should be in range 1..4 inclusive");
+
+    if (Rows < 1 or Rows > 4)
+        @compileError("Mat: invalid 'Rows' value - should be in range 1..4 inclusive");
+
     return extern struct {
-        pub usingnamespace MatMixin(Self, 2, 2, Real);
+        pub usingnamespace MatMixin(Self, Cols, Rows, Real);
 
         const Self = @This();
 
         cols: [Self.col_count]Self.col_type,
     };
+}
+
+pub fn Mat1x1(comptime Real: type) type {
+    return Mat(1, 1, Real);
+}
+
+pub fn Mat1x2(comptime Real: type) type {
+    return Mat(1, 2, Real);
+}
+
+pub fn Mat1x3(comptime Real: type) type {
+    return Mat(1, 3, Real);
+}
+
+pub fn Mat1x4(comptime Real: type) type {
+    return Mat(1, 4, Real);
+}
+
+pub fn Mat2x1(comptime Real: type) type {
+    return Mat(2, 1, Real);
+}
+
+pub fn Mat2x2(comptime Real: type) type {
+    return Mat(2, 2, Real);
 }
 
 pub fn Mat2x3(comptime Real: type) type {
-    concept.requireArithmetic(Real);
-
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 2, 3, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+    return Mat(2, 3, Real);
 }
 
 pub fn Mat2x4(comptime Real: type) type {
-    concept.requireArithmetic(Real);
+    return Mat(2, 4, Real);
+}
 
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 2, 4, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+pub fn Mat3x1(comptime Real: type) type {
+    return Mat(3, 1, Real);
 }
 
 pub fn Mat3x2(comptime Real: type) type {
-    concept.requireArithmetic(Real);
-
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 3, 2, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+    return Mat(3, 2, Real);
 }
 
 pub fn Mat3x3(comptime Real: type) type {
-    concept.requireArithmetic(Real);
-
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 3, 3, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+    return Mat(3, 3, Real);
 }
 
 pub fn Mat3x4(comptime Real: type) type {
-    concept.requireArithmetic(Real);
+    return Mat(3, 4, Real);
+}
 
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 3, 4, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+pub fn Mat4x1(comptime Real: type) type {
+    return Mat(4, 1, Real);
 }
 
 pub fn Mat4x2(comptime Real: type) type {
-    concept.requireArithmetic(Real);
-
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 4, 2, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+    return Mat(4, 2, Real);
 }
 
 pub fn Mat4x3(comptime Real: type) type {
-    concept.requireArithmetic(Real);
-
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 4, 3, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+    return Mat(4, 3, Real);
 }
 
 pub fn Mat4x4(comptime Real: type) type {
-    concept.requireArithmetic(Real);
-
-    return extern struct {
-        pub usingnamespace MatMixin(Self, 4, 4, Real);
-
-        const Self = @This();
-
-        cols: [Self.col_count]Self.col_type,
-    };
+    return Mat(4, 4, Real);
 }
 
-pub fn Mat(comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    return switch (Cols) {
-        2 => switch (Rows) {
-            2 => Mat2x2(Real),
-            3 => Mat2x3(Real),
-            4 => Mat2x4(Real),
-            else => @compileError("Mat: invalid 'Rows' value - should be in range 2...4"),
-        },
-        3 => switch (Rows) {
-            2 => Mat3x2(Real),
-            3 => Mat3x3(Real),
-            4 => Mat3x4(Real),
-            else => @compileError("Mat: invalid 'Rows' value - should be in range 2...4"),
-        },
-        4 => switch (Rows) {
-            2 => Mat4x2(Real),
-            3 => Mat4x3(Real),
-            4 => Mat4x4(Real),
-            else => @compileError("Mat: invalid 'Rows' value - should be in range 2...4"),
-        },
-        else => @compileError("Mat: invalid 'Cols' value - should be in range 2...4"),
-    };
-}
-
-// TODO: add matrices with 1 as rows/cols, when this is done update mat/concept.zig
+pub const Mat1 = Mat1x1;
 pub const Mat2 = Mat2x2;
 pub const Mat3 = Mat3x3;
 pub const Mat4 = Mat4x4;
