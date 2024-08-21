@@ -7,7 +7,7 @@ const Vec3 = vec.Vec3;
 const Vec4 = vec.Vec4;
 
 const TypeHelper = struct {
-    fn BoolVecTypeFromVecType(comptime Type: type) type {
+    fn BooleanVecTypeFromVecType(comptime Type: type) type {
         return Mat(Type.col_count, Type.row_count, bool);
     }
 };
@@ -93,8 +93,8 @@ fn ArithmeticMatMixin(comptime Self: type, comptime Real: type) type {
                 @field(mat.cols[cidx], @typeInfo(Self.col_type).Struct.fields[ridx].name) = val;
             }
 
-            pub fn equal(a: Self, b: Self) TypeHelper.BoolVecTypeFromVecType(Self) {
-                var res: TypeHelper.BoolVecTypeFromVecType(Self) = undefined;
+            pub fn equal(a: Self, b: Self) TypeHelper.BooleanVecTypeFromVecType(Self) {
+                var res: TypeHelper.BooleanVecTypeFromVecType(Self) = undefined;
                 inline for (0..Self.col_count) |cidx| {
                     inline for (@typeInfo(Self.col_type).Struct.fields) |fld|
                         @field(res.cols[cidx], fld.name) = @field(a.cols[cidx], fld.name) == @field(b.cols[cidx], fld.name);
@@ -102,8 +102,8 @@ fn ArithmeticMatMixin(comptime Self: type, comptime Real: type) type {
                 return res;
             }
 
-            pub fn notEqual(a: Self, b: Self) TypeHelper.BoolVecTypeFromVecType(Self) {
-                var res: TypeHelper.BoolVecTypeFromVecType(Self) = undefined;
+            pub fn notEqual(a: Self, b: Self) TypeHelper.BooleanVecTypeFromVecType(Self) {
+                var res: TypeHelper.BooleanVecTypeFromVecType(Self) = undefined;
                 inline for (0..Self.col_count) |cidx| {
                     inline for (@typeInfo(Self.col_type).Struct.fields) |fld|
                         @field(res.cols[cidx], fld.name) = @field(a.cols[cidx], fld.name) != @field(b.cols[cidx], fld.name);
@@ -119,16 +119,6 @@ fn ArithmeticMatMixin(comptime Self: type, comptime Real: type) type {
                 }
                 return true;
             }
-        }
-    else
-        struct {};
-}
-
-fn ArithmeticMatNxNMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: comptime_int, comptime Real: type) type {
-    _ = Self;
-    return if (Cols == Rows and concept.isArithmetic(Real))
-        struct {
-            // TODO: identity? Can we maybe remove diagonal on all mixins with NxN?
         }
     else
         struct {};
@@ -613,7 +603,6 @@ fn MatMixin(comptime Self: type, comptime Cols: comptime_int, comptime Rows: com
         pub const row_type = Vec(Cols, Real);
 
         pub usingnamespace ArithmeticMatMixin(Self, Real);
-        pub usingnamespace ArithmeticMatNxNMixin(Self, Cols, Rows, Real);
         pub usingnamespace ArithmeticMat1xMMixin(Self, Cols, Real);
         pub usingnamespace ArithmeticMat2xMMixin(Self, Cols, Real);
         pub usingnamespace ArithmeticMat3xMMixin(Self, Cols, Real);
