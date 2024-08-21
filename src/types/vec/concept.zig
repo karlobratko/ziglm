@@ -15,7 +15,7 @@ pub fn isVec(comptime Type: type) bool {
         return false;
 
     return inline for (fields, 0..) |field, i| {
-        if (!concept.isArithmetic(field.type) or field.name.len != 1 or field.name[0] != FIELD_NAMES[i])
+        if (field.name.len != 1 or field.name[0] != FIELD_NAMES[i] or !concept.isArithmetic(field.type))
             break false;
     } else true;
 }

@@ -1063,21 +1063,21 @@ test "Vec.all(...)" {
     try testing.expect(!Vec4(bool).new(true, false, true, false).all());
 }
 
-test "Vec.not(...)" {
-    try testing.expect(!Vec1(bool).as(true).not().all());
-    try testing.expect(!Vec2(bool).as(true).not().all());
-    try testing.expect(!Vec3(bool).as(true).not().all());
-    try testing.expect(!Vec4(bool).as(true).not().all());
+test "Vec.negate(...)" {
+    try testing.expect(!Vec1(bool).as(true).negate().all());
+    try testing.expect(!Vec2(bool).as(true).negate().all());
+    try testing.expect(!Vec3(bool).as(true).negate().all());
+    try testing.expect(!Vec4(bool).as(true).negate().all());
 
-    try testing.expect(Vec1(bool).as(false).not().all());
-    try testing.expect(Vec2(bool).as(false).not().all());
-    try testing.expect(Vec3(bool).as(false).not().all());
-    try testing.expect(Vec4(bool).as(false).not().all());
+    try testing.expect(Vec1(bool).as(false).negate().all());
+    try testing.expect(Vec2(bool).as(false).negate().all());
+    try testing.expect(Vec3(bool).as(false).negate().all());
+    try testing.expect(Vec4(bool).as(false).negate().all());
 
-    try testing.expect(!Vec1(bool).new(true).not().all());
-    try testing.expect(!Vec2(bool).new(true, false).not().all());
-    try testing.expect(!Vec3(bool).new(true, false, true).not().all());
-    try testing.expect(!Vec4(bool).new(true, false, true, false).not().all());
+    try testing.expect(!Vec1(bool).new(true).negate().all());
+    try testing.expect(!Vec2(bool).new(true, false).negate().all());
+    try testing.expect(!Vec3(bool).new(true, false, true).negate().all());
+    try testing.expect(!Vec4(bool).new(true, false, true, false).negate().all());
 }
 
 test "Vec.unit_x" {
@@ -1171,41 +1171,41 @@ test "Vec.add(...)" {
     try testing.expect(vec4u32.x == 2 and vec4u32.y == 3 and vec4u32.z == 4 and vec4u32.w == 5);
 }
 
-test "Vec.adds(...)" {
-    const vec1f32 = Vec1(f32).new(1).adds(1);
+test "Vec.addScalar(...)" {
+    const vec1f32 = Vec1(f32).new(1).addScalar(1);
     try testing.expect(vec1f32.x == 2);
 
-    const vec2f32 = Vec2(f32).new(1, 2).adds(1);
+    const vec2f32 = Vec2(f32).new(1, 2).addScalar(1);
     try testing.expect(vec2f32.x == 2 and vec2f32.y == 3);
 
-    const vec3f32 = Vec3(f32).new(1, 2, 3).adds(1);
+    const vec3f32 = Vec3(f32).new(1, 2, 3).addScalar(1);
     try testing.expect(vec3f32.x == 2 and vec3f32.y == 3 and vec3f32.z == 4);
 
-    const vec4f32 = Vec4(f32).new(1, 2, 3, 4).adds(1);
+    const vec4f32 = Vec4(f32).new(1, 2, 3, 4).addScalar(1);
     try testing.expect(vec4f32.x == 2 and vec4f32.y == 3 and vec4f32.z == 4 and vec4f32.w == 5);
 
-    const vec1i32 = Vec1(i32).new(1).adds(1);
+    const vec1i32 = Vec1(i32).new(1).addScalar(1);
     try testing.expect(vec1i32.x == 2);
 
-    const vec2i32 = Vec2(i32).new(1, 2).adds(1);
+    const vec2i32 = Vec2(i32).new(1, 2).addScalar(1);
     try testing.expect(vec2i32.x == 2 and vec2i32.y == 3);
 
-    const vec3i32 = Vec3(i32).new(1, 2, 3).adds(1);
+    const vec3i32 = Vec3(i32).new(1, 2, 3).addScalar(1);
     try testing.expect(vec3i32.x == 2 and vec3i32.y == 3 and vec3i32.z == 4);
 
-    const vec4i32 = Vec4(i32).new(1, 2, 3, 4).adds(1);
+    const vec4i32 = Vec4(i32).new(1, 2, 3, 4).addScalar(1);
     try testing.expect(vec4i32.x == 2 and vec4i32.y == 3 and vec4i32.z == 4 and vec4i32.w == 5);
 
-    const vec1u32 = Vec1(u32).new(1).adds(1);
+    const vec1u32 = Vec1(u32).new(1).addScalar(1);
     try testing.expect(vec1u32.x == 2);
 
-    const vec2u32 = Vec2(u32).new(1, 2).adds(1);
+    const vec2u32 = Vec2(u32).new(1, 2).addScalar(1);
     try testing.expect(vec2u32.x == 2 and vec2u32.y == 3);
 
-    const vec3u32 = Vec3(u32).new(1, 2, 3).adds(1);
+    const vec3u32 = Vec3(u32).new(1, 2, 3).addScalar(1);
     try testing.expect(vec3u32.x == 2 and vec3u32.y == 3 and vec3u32.z == 4);
 
-    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).adds(1);
+    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).addScalar(1);
     try testing.expect(vec4u32.x == 2 and vec4u32.y == 3 and vec4u32.z == 4 and vec4u32.w == 5);
 }
 
@@ -1247,41 +1247,41 @@ test "Vec.sub(...)" {
     try testing.expect(vec4u32.x == 0 and vec4u32.y == 1 and vec4u32.z == 2 and vec4u32.w == 3);
 }
 
-test "Vec.subs(...)" {
-    const vec1f32 = Vec1(f32).new(1).subs(1);
+test "Vec.subScalar(...)" {
+    const vec1f32 = Vec1(f32).new(1).subScalar(1);
     try testing.expect(vec1f32.x == 0);
 
-    const vec2f32 = Vec2(f32).new(1, 2).subs(1);
+    const vec2f32 = Vec2(f32).new(1, 2).subScalar(1);
     try testing.expect(vec2f32.x == 0 and vec2f32.y == 1);
 
-    const vec3f32 = Vec3(f32).new(1, 2, 3).subs(1);
+    const vec3f32 = Vec3(f32).new(1, 2, 3).subScalar(1);
     try testing.expect(vec3f32.x == 0 and vec3f32.y == 1 and vec3f32.z == 2);
 
-    const vec4f32 = Vec4(f32).new(1, 2, 3, 4).subs(1);
+    const vec4f32 = Vec4(f32).new(1, 2, 3, 4).subScalar(1);
     try testing.expect(vec4f32.x == 0 and vec4f32.y == 1 and vec4f32.z == 2 and vec4f32.w == 3);
 
-    const vec1i32 = Vec1(i32).new(1).subs(1);
+    const vec1i32 = Vec1(i32).new(1).subScalar(1);
     try testing.expect(vec1i32.x == 0);
 
-    const vec2i32 = Vec2(i32).new(1, 2).subs(1);
+    const vec2i32 = Vec2(i32).new(1, 2).subScalar(1);
     try testing.expect(vec2i32.x == 0 and vec2i32.y == 1);
 
-    const vec3i32 = Vec3(i32).new(1, 2, 3).subs(1);
+    const vec3i32 = Vec3(i32).new(1, 2, 3).subScalar(1);
     try testing.expect(vec3i32.x == 0 and vec3i32.y == 1 and vec3i32.z == 2);
 
-    const vec4i32 = Vec4(i32).new(1, 2, 3, 4).subs(1);
+    const vec4i32 = Vec4(i32).new(1, 2, 3, 4).subScalar(1);
     try testing.expect(vec4i32.x == 0 and vec4i32.y == 1 and vec4i32.z == 2 and vec4i32.w == 3);
 
-    const vec1u32 = Vec1(u32).new(1).subs(1);
+    const vec1u32 = Vec1(u32).new(1).subScalar(1);
     try testing.expect(vec1u32.x == 0);
 
-    const vec2u32 = Vec2(u32).new(1, 2).subs(1);
+    const vec2u32 = Vec2(u32).new(1, 2).subScalar(1);
     try testing.expect(vec2u32.x == 0 and vec2u32.y == 1);
 
-    const vec3u32 = Vec3(u32).new(1, 2, 3).subs(1);
+    const vec3u32 = Vec3(u32).new(1, 2, 3).subScalar(1);
     try testing.expect(vec3u32.x == 0 and vec3u32.y == 1 and vec3u32.z == 2);
 
-    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).subs(1);
+    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).subScalar(1);
     try testing.expect(vec4u32.x == 0 and vec4u32.y == 1 and vec4u32.z == 2 and vec4u32.w == 3);
 }
 
@@ -1323,41 +1323,41 @@ test "Vec.mul(...)" {
     try testing.expect(vec4u32.x == 2 and vec4u32.y == 4 and vec4u32.z == 6 and vec4u32.w == 8);
 }
 
-test "Vec.muls(...)" {
-    const vec1f32 = Vec1(f32).new(-1.5).muls(2);
+test "Vec.mulScalar(...)" {
+    const vec1f32 = Vec1(f32).new(-1.5).mulScalar(2);
     try testing.expect(vec1f32.x == -3);
 
-    const vec2f32 = Vec2(f32).new(-1.5, 2.5).muls(2);
+    const vec2f32 = Vec2(f32).new(-1.5, 2.5).mulScalar(2);
     try testing.expect(vec2f32.x == -3 and vec2f32.y == 5);
 
-    const vec3f32 = Vec3(f32).new(-1.5, 2.5, 3.5).muls(2);
+    const vec3f32 = Vec3(f32).new(-1.5, 2.5, 3.5).mulScalar(2);
     try testing.expect(vec3f32.x == -3 and vec3f32.y == 5 and vec3f32.z == 7);
 
-    const vec4f32 = Vec4(f32).new(-1.5, 2.5, 3.5, 4.5).muls(2);
+    const vec4f32 = Vec4(f32).new(-1.5, 2.5, 3.5, 4.5).mulScalar(2);
     try testing.expect(vec4f32.x == -3 and vec4f32.y == 5 and vec4f32.z == 7 and vec4f32.w == 9);
 
-    const vec1i32 = Vec1(i32).new(-1).muls(2);
+    const vec1i32 = Vec1(i32).new(-1).mulScalar(2);
     try testing.expect(vec1i32.x == -2);
 
-    const vec2i32 = Vec2(i32).new(-1, 2).muls(2);
+    const vec2i32 = Vec2(i32).new(-1, 2).mulScalar(2);
     try testing.expect(vec2i32.x == -2 and vec2i32.y == 4);
 
-    const vec3i32 = Vec3(i32).new(-1, 2, 3).muls(2);
+    const vec3i32 = Vec3(i32).new(-1, 2, 3).mulScalar(2);
     try testing.expect(vec3i32.x == -2 and vec3i32.y == 4 and vec3i32.z == 6);
 
-    const vec4i32 = Vec4(i32).new(-1, 2, 3, 4).muls(2);
+    const vec4i32 = Vec4(i32).new(-1, 2, 3, 4).mulScalar(2);
     try testing.expect(vec4i32.x == -2 and vec4i32.y == 4 and vec4i32.z == 6 and vec4i32.w == 8);
 
-    const vec1u32 = Vec1(u32).new(1).muls(2);
+    const vec1u32 = Vec1(u32).new(1).mulScalar(2);
     try testing.expect(vec1u32.x == 2);
 
-    const vec2u32 = Vec2(u32).new(1, 2).muls(2);
+    const vec2u32 = Vec2(u32).new(1, 2).mulScalar(2);
     try testing.expect(vec2u32.x == 2 and vec2u32.y == 4);
 
-    const vec3u32 = Vec3(u32).new(1, 2, 3).muls(2);
+    const vec3u32 = Vec3(u32).new(1, 2, 3).mulScalar(2);
     try testing.expect(vec3u32.x == 2 and vec3u32.y == 4 and vec3u32.z == 6);
 
-    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).muls(2);
+    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).mulScalar(2);
     try testing.expect(vec4u32.x == 2 and vec4u32.y == 4 and vec4u32.z == 6 and vec4u32.w == 8);
 }
 
@@ -1399,41 +1399,41 @@ test "Vec.pow(...)" {
     try testing.expect(vec4u32.x == 1 and vec4u32.y == 4 and vec4u32.z == 9 and vec4u32.w == 16);
 }
 
-test "Vec.pows(...)" {
-    const vec1f32 = Vec1(f32).new(-1.5).pows(2);
+test "Vec.powScalar(...)" {
+    const vec1f32 = Vec1(f32).new(-1.5).powScalar(2);
     try testing.expect(vec1f32.x == 2.25);
 
-    const vec2f32 = Vec2(f32).new(-1.5, 2.5).pows(2);
+    const vec2f32 = Vec2(f32).new(-1.5, 2.5).powScalar(2);
     try testing.expect(vec2f32.x == 2.25 and vec2f32.y == 6.25);
 
-    const vec3f32 = Vec3(f32).new(-1.5, 2.5, 3.5).pows(2);
+    const vec3f32 = Vec3(f32).new(-1.5, 2.5, 3.5).powScalar(2);
     try testing.expect(vec3f32.x == 2.25 and vec3f32.y == 6.25 and vec3f32.z == 12.25);
 
-    const vec4f32 = Vec4(f32).new(-1.5, 2.5, 3.5, 4.5).pows(2);
+    const vec4f32 = Vec4(f32).new(-1.5, 2.5, 3.5, 4.5).powScalar(2);
     try testing.expect(vec4f32.x == 2.25 and vec4f32.y == 6.25 and vec4f32.z == 12.25 and vec4f32.w == 20.25);
 
-    const vec1i32 = Vec1(i32).new(-1).pows(2);
+    const vec1i32 = Vec1(i32).new(-1).powScalar(2);
     try testing.expect(vec1i32.x == 1);
 
-    const vec2i32 = Vec2(i32).new(-1, 2).pows(2);
+    const vec2i32 = Vec2(i32).new(-1, 2).powScalar(2);
     try testing.expect(vec2i32.x == 1 and vec2i32.y == 4);
 
-    const vec3i32 = Vec3(i32).new(-1, 2, 3).pows(2);
+    const vec3i32 = Vec3(i32).new(-1, 2, 3).powScalar(2);
     try testing.expect(vec3i32.x == 1 and vec3i32.y == 4 and vec3i32.z == 9);
 
-    const vec4i32 = Vec4(i32).new(-1, 2, 3, 4).pows(2);
+    const vec4i32 = Vec4(i32).new(-1, 2, 3, 4).powScalar(2);
     try testing.expect(vec4i32.x == 1 and vec4i32.y == 4 and vec4i32.z == 9 and vec4i32.w == 16);
 
-    const vec1u32 = Vec1(u32).new(1).pows(2);
+    const vec1u32 = Vec1(u32).new(1).powScalar(2);
     try testing.expect(vec1u32.x == 1);
 
-    const vec2u32 = Vec2(u32).new(1, 2).pows(2);
+    const vec2u32 = Vec2(u32).new(1, 2).powScalar(2);
     try testing.expect(vec2u32.x == 1 and vec2u32.y == 4);
 
-    const vec3u32 = Vec3(u32).new(1, 2, 3).pows(2);
+    const vec3u32 = Vec3(u32).new(1, 2, 3).powScalar(2);
     try testing.expect(vec3u32.x == 1 and vec3u32.y == 4 and vec3u32.z == 9);
 
-    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).pows(2);
+    const vec4u32 = Vec4(u32).new(1, 2, 3, 4).powScalar(2);
     try testing.expect(vec4u32.x == 1 and vec4u32.y == 4 and vec4u32.z == 9 and vec4u32.w == 16);
 }
 
@@ -1551,41 +1551,41 @@ test "Vec.mod(...)" {
     try testing.expect(vec4u32_mod.x == 1 and vec4u32_mod.y == 1 and vec4u32_mod.z == 1 and vec4u32_mod.w == 1);
 }
 
-test "Vec.mods(...)" {
-    const vec1f32_mods = Vec1(f32).new(-5.5).mods(2);
+test "Vec.modScalar(...)" {
+    const vec1f32_mods = Vec1(f32).new(-5.5).modScalar(2);
     try testing.expect(vec1f32_mods.x == 0.5);
 
-    const vec2f32_mods = Vec2(f32).new(-5.5, 5.5).mods(2);
+    const vec2f32_mods = Vec2(f32).new(-5.5, 5.5).modScalar(2);
     try testing.expect(vec2f32_mods.x == 0.5 and vec2f32_mods.y == 1.5);
 
-    const vec3f32_mods = Vec3(f32).new(-5.5, 5.5, 5).mods(2);
+    const vec3f32_mods = Vec3(f32).new(-5.5, 5.5, 5).modScalar(2);
     try testing.expect(vec3f32_mods.x == 0.5 and vec3f32_mods.y == 1.5 and vec3f32_mods.z == 1);
 
-    const vec4f32_mods = Vec4(f32).new(-5.5, 5.5, 5, 100).mods(2);
+    const vec4f32_mods = Vec4(f32).new(-5.5, 5.5, 5, 100).modScalar(2);
     try testing.expect(vec4f32_mods.x == 0.5 and vec4f32_mods.y == 1.5 and vec4f32_mods.z == 1 and vec4f32_mods.w == 0);
 
-    const vec1i32_mods = Vec1(i32).new(-5).mods(2);
+    const vec1i32_mods = Vec1(i32).new(-5).modScalar(2);
     try testing.expect(vec1i32_mods.x == 1);
 
-    const vec2i32_mods = Vec2(i32).new(-5, 5).mods(2);
+    const vec2i32_mods = Vec2(i32).new(-5, 5).modScalar(2);
     try testing.expect(vec2i32_mods.x == 1 and vec2i32_mods.y == 1);
 
-    const vec3i32_mods = Vec3(i32).new(-5, 5, 5).mods(2);
+    const vec3i32_mods = Vec3(i32).new(-5, 5, 5).modScalar(2);
     try testing.expect(vec3i32_mods.x == 1 and vec3i32_mods.y == 1 and vec3i32_mods.z == 1);
 
-    const vec4i32_mods = Vec4(i32).new(-5, 5, 5, 100).mods(2);
+    const vec4i32_mods = Vec4(i32).new(-5, 5, 5, 100).modScalar(2);
     try testing.expect(vec4i32_mods.x == 1 and vec4i32_mods.y == 1 and vec4i32_mods.z == 1 and vec4i32_mods.w == 0);
 
-    const vec1u32_mods = Vec1(u32).new(5).mods(2);
+    const vec1u32_mods = Vec1(u32).new(5).modScalar(2);
     try testing.expect(vec1u32_mods.x == 1);
 
-    const vec2u32_mods = Vec2(u32).new(5, 5).mods(2);
+    const vec2u32_mods = Vec2(u32).new(5, 5).modScalar(2);
     try testing.expect(vec2u32_mods.x == 1 and vec2u32_mods.y == 1);
 
-    const vec3u32_mods = Vec3(u32).new(5, 5, 5).mods(2);
+    const vec3u32_mods = Vec3(u32).new(5, 5, 5).modScalar(2);
     try testing.expect(vec3u32_mods.x == 1 and vec3u32_mods.y == 1 and vec3u32_mods.z == 1);
 
-    const vec4u32_mods = Vec4(u32).new(5, 5, 5, 100).mods(2);
+    const vec4u32_mods = Vec4(u32).new(5, 5, 5, 100).modScalar(2);
     try testing.expect(vec4u32_mods.x == 1 and vec4u32_mods.y == 1 and vec4u32_mods.z == 1 and vec4u32_mods.w == 0);
 }
 
@@ -1627,41 +1627,41 @@ test "Vec.min(...)" {
     try testing.expect(vec4u32_min.x == 1 and vec4u32_min.y == 2 and vec4u32_min.z == 2 and vec4u32_min.w == 1);
 }
 
-test "Vec.mins(...)" {
-    const vec1f32_mins = Vec1(f32).new(1).mins(-1.5);
+test "Vec.minScalar(...)" {
+    const vec1f32_mins = Vec1(f32).new(1).minScalar(-1.5);
     try testing.expect(vec1f32_mins.x == -1.5);
 
-    const vec2f32_mins = Vec2(f32).new(1, -0.5).mins(0);
+    const vec2f32_mins = Vec2(f32).new(1, -0.5).minScalar(0);
     try testing.expect(vec2f32_mins.x == 0 and vec2f32_mins.y == -0.5);
 
-    const vec3f32_mins = Vec3(f32).new(1, -0.5, 0.5).mins(0.75);
+    const vec3f32_mins = Vec3(f32).new(1, -0.5, 0.5).minScalar(0.75);
     try testing.expect(vec3f32_mins.x == 0.75 and vec3f32_mins.y == -0.5 and vec3f32_mins.z == 0.5);
 
-    const vec4f32_mins = Vec4(f32).new(1, -0.5, 0.5, 0).mins(0);
+    const vec4f32_mins = Vec4(f32).new(1, -0.5, 0.5, 0).minScalar(0);
     try testing.expect(vec4f32_mins.x == 0 and vec4f32_mins.y == -0.5 and vec4f32_mins.z == 0 and vec4f32_mins.w == 0);
 
-    const vec1i32_mins = Vec1(i32).new(1).mins(-1);
+    const vec1i32_mins = Vec1(i32).new(1).minScalar(-1);
     try testing.expect(vec1i32_mins.x == -1);
 
-    const vec2i32_mins = Vec2(i32).new(1, -100).mins(-1);
+    const vec2i32_mins = Vec2(i32).new(1, -100).minScalar(-1);
     try testing.expect(vec2i32_mins.x == -1 and vec2i32_mins.y == -100);
 
-    const vec3i32_mins = Vec3(i32).new(1, -100, 0).mins(-1);
+    const vec3i32_mins = Vec3(i32).new(1, -100, 0).minScalar(-1);
     try testing.expect(vec3i32_mins.x == -1 and vec3i32_mins.y == -100 and vec3i32_mins.z == -1);
 
-    const vec4i32_mins = Vec4(i32).new(1, -100, 0, -100).mins(0);
+    const vec4i32_mins = Vec4(i32).new(1, -100, 0, -100).minScalar(0);
     try testing.expect(vec4i32_mins.x == 0 and vec4i32_mins.y == -100 and vec4i32_mins.z == 0 and vec4i32_mins.w == -100);
 
-    const vec1u32_mins = Vec1(u32).new(1).mins(100);
+    const vec1u32_mins = Vec1(u32).new(1).minScalar(100);
     try testing.expect(vec1u32_mins.x == 1);
 
-    const vec2u32_mins = Vec2(u32).new(1, 20).mins(0);
+    const vec2u32_mins = Vec2(u32).new(1, 20).minScalar(0);
     try testing.expect(vec2u32_mins.x == 0 and vec2u32_mins.y == 0);
 
-    const vec3u32_mins = Vec3(u32).new(1, 2, 3).mins(2);
+    const vec3u32_mins = Vec3(u32).new(1, 2, 3).minScalar(2);
     try testing.expect(vec3u32_mins.x == 1 and vec3u32_mins.y == 2 and vec3u32_mins.z == 2);
 
-    const vec4u32_mins = Vec4(u32).new(1, 2, 3, 4).mins(3);
+    const vec4u32_mins = Vec4(u32).new(1, 2, 3, 4).minScalar(3);
     try testing.expect(vec4u32_mins.x == 1 and vec4u32_mins.y == 2 and vec4u32_mins.z == 3 and vec4u32_mins.w == 3);
 }
 
@@ -1703,41 +1703,41 @@ test "Vec.max(...)" {
     try testing.expect(vec4u32_max.x == 4 and vec4u32_max.y == 3 and vec4u32_max.z == 3 and vec4u32_max.w == 4);
 }
 
-test "Vec.maxs(...)" {
-    const vec1f32_maxs = Vec1(f32).new(1).maxs(-1.5);
+test "Vec.maxScalar(...)" {
+    const vec1f32_maxs = Vec1(f32).new(1).maxScalar(-1.5);
     try testing.expect(vec1f32_maxs.x == 1);
 
-    const vec2f32_maxs = Vec2(f32).new(1, -0.5).maxs(0);
+    const vec2f32_maxs = Vec2(f32).new(1, -0.5).maxScalar(0);
     try testing.expect(vec2f32_maxs.x == 1 and vec2f32_maxs.y == 0);
 
-    const vec3f32_maxs = Vec3(f32).new(1, -0.5, 0.5).maxs(0.75);
+    const vec3f32_maxs = Vec3(f32).new(1, -0.5, 0.5).maxScalar(0.75);
     try testing.expect(vec3f32_maxs.x == 1 and vec3f32_maxs.y == 0.75 and vec3f32_maxs.z == 0.75);
 
-    const vec4f32_maxs = Vec4(f32).new(1, -0.5, 0.5, 0).maxs(0);
+    const vec4f32_maxs = Vec4(f32).new(1, -0.5, 0.5, 0).maxScalar(0);
     try testing.expect(vec4f32_maxs.x == 1 and vec4f32_maxs.y == 0 and vec4f32_maxs.z == 0.5 and vec4f32_maxs.w == 0);
 
-    const vec1i32_maxs = Vec1(i32).new(1).maxs(-1);
+    const vec1i32_maxs = Vec1(i32).new(1).maxScalar(-1);
     try testing.expect(vec1i32_maxs.x == 1);
 
-    const vec2i32_maxs = Vec2(i32).new(1, -100).maxs(-1);
+    const vec2i32_maxs = Vec2(i32).new(1, -100).maxScalar(-1);
     try testing.expect(vec2i32_maxs.x == 1 and vec2i32_maxs.y == -1);
 
-    const vec3i32_maxs = Vec3(i32).new(1, -100, 0).maxs(-1);
+    const vec3i32_maxs = Vec3(i32).new(1, -100, 0).maxScalar(-1);
     try testing.expect(vec3i32_maxs.x == 1 and vec3i32_maxs.y == -1 and vec3i32_maxs.z == 0);
 
-    const vec4i32_maxs = Vec4(i32).new(1, -100, 0, -100).maxs(0);
+    const vec4i32_maxs = Vec4(i32).new(1, -100, 0, -100).maxScalar(0);
     try testing.expect(vec4i32_maxs.x == 1 and vec4i32_maxs.y == 0 and vec4i32_maxs.z == 0 and vec4i32_maxs.w == 0);
 
-    const vec1u32_maxs = Vec1(u32).new(1).maxs(100);
+    const vec1u32_maxs = Vec1(u32).new(1).maxScalar(100);
     try testing.expect(vec1u32_maxs.x == 100);
 
-    const vec2u32_maxs = Vec2(u32).new(1, 20).maxs(0);
+    const vec2u32_maxs = Vec2(u32).new(1, 20).maxScalar(0);
     try testing.expect(vec2u32_maxs.x == 1 and vec2u32_maxs.y == 20);
 
-    const vec3u32_maxs = Vec3(u32).new(1, 2, 3).maxs(2);
+    const vec3u32_maxs = Vec3(u32).new(1, 2, 3).maxScalar(2);
     try testing.expect(vec3u32_maxs.x == 2 and vec3u32_maxs.y == 2 and vec3u32_maxs.z == 3);
 
-    const vec4u32_maxs = Vec4(u32).new(1, 2, 3, 4).maxs(3);
+    const vec4u32_maxs = Vec4(u32).new(1, 2, 3, 4).maxScalar(3);
     try testing.expect(vec4u32_maxs.x == 3 and vec4u32_maxs.y == 3 and vec4u32_maxs.z == 3 and vec4u32_maxs.w == 4);
 }
 
@@ -1779,117 +1779,117 @@ test "Vec.clamp(...)" {
     try testing.expect(vec4u32_clamp.x == 3 and vec4u32_clamp.y == 4 and vec4u32_clamp.z == 2 and vec4u32_clamp.w == 4);
 }
 
-test "Vec.clamps(...)" {
-    const vec1f32_clamps = Vec1(f32).new(0).clamps(-1.5, 1.5);
+test "Vec.clampScalar(...)" {
+    const vec1f32_clamps = Vec1(f32).new(0).clampScalar(-1.5, 1.5);
     try testing.expect(vec1f32_clamps.x == 0);
 
-    const vec2f32_clamps = Vec2(f32).new(0, 2.5).clamps(-1.5, 1.5);
+    const vec2f32_clamps = Vec2(f32).new(0, 2.5).clampScalar(-1.5, 1.5);
     try testing.expect(vec2f32_clamps.x == 0 and vec2f32_clamps.y == 1.5);
 
-    const vec3f32_clamps = Vec3(f32).new(0, 2.5, -2.5).clamps(-1.5, 1.5);
+    const vec3f32_clamps = Vec3(f32).new(0, 2.5, -2.5).clampScalar(-1.5, 1.5);
     try testing.expect(vec3f32_clamps.x == 0 and vec3f32_clamps.y == 1.5 and vec3f32_clamps.z == -1.5);
 
-    const vec4f32_clamps = Vec4(f32).new(0, 2.5, -2.5, 1.5).clamps(-1.5, 1.5);
+    const vec4f32_clamps = Vec4(f32).new(0, 2.5, -2.5, 1.5).clampScalar(-1.5, 1.5);
     try testing.expect(vec4f32_clamps.x == 0 and vec4f32_clamps.y == 1.5 and vec4f32_clamps.z == -1.5 and vec4f32_clamps.w == 1.5);
 
-    const vec1i32_clamps = Vec1(i32).new(0).clamps(-1, 1);
+    const vec1i32_clamps = Vec1(i32).new(0).clampScalar(-1, 1);
     try testing.expect(vec1i32_clamps.x == 0);
 
-    const vec2i32_clamps = Vec2(i32).new(0, 2).clamps(-1, 1);
+    const vec2i32_clamps = Vec2(i32).new(0, 2).clampScalar(-1, 1);
     try testing.expect(vec2i32_clamps.x == 0 and vec2i32_clamps.y == 1);
 
-    const vec3i32_clamps = Vec3(i32).new(0, 2, -2).clamps(-1, 1);
+    const vec3i32_clamps = Vec3(i32).new(0, 2, -2).clampScalar(-1, 1);
     try testing.expect(vec3i32_clamps.x == 0 and vec3i32_clamps.y == 1 and vec3i32_clamps.z == -1);
 
-    const vec4i32_clamps = Vec4(i32).new(0, 2, -2, 1).clamps(-1, 1);
+    const vec4i32_clamps = Vec4(i32).new(0, 2, -2, 1).clampScalar(-1, 1);
     try testing.expect(vec4i32_clamps.x == 0 and vec4i32_clamps.y == 1 and vec4i32_clamps.z == -1 and vec4i32_clamps.w == 1);
 
-    const vec1u32_clamps = Vec1(u32).new(3).clamps(2, 4);
+    const vec1u32_clamps = Vec1(u32).new(3).clampScalar(2, 4);
     try testing.expect(vec1u32_clamps.x == 3);
 
-    const vec2u32_clamps = Vec2(u32).new(3, 5).clamps(2, 4);
+    const vec2u32_clamps = Vec2(u32).new(3, 5).clampScalar(2, 4);
     try testing.expect(vec2u32_clamps.x == 3 and vec2u32_clamps.y == 4);
 
-    const vec3u32_clamps = Vec3(u32).new(3, 5, 1).clamps(2, 4);
+    const vec3u32_clamps = Vec3(u32).new(3, 5, 1).clampScalar(2, 4);
     try testing.expect(vec3u32_clamps.x == 3 and vec3u32_clamps.y == 4 and vec3u32_clamps.z == 2);
 
-    const vec4u32_clamps = Vec4(u32).new(3, 5, 1, 4).clamps(2, 4);
+    const vec4u32_clamps = Vec4(u32).new(3, 5, 1, 4).clampScalar(2, 4);
     try testing.expect(vec4u32_clamps.x == 3 and vec4u32_clamps.y == 4 and vec4u32_clamps.z == 2 and vec4u32_clamps.w == 4);
 }
 
 test "Vec.step(...)" {
-    const vec1f32_step = Vec1(f32).as(1).step(Vec1(f32).new(0.5));
+    const vec1f32_step = Vec1(f32).new(0.5).step(Vec1(f32).as(1));
     try testing.expect(vec1f32_step.x == 0);
 
-    const vec2f32_step = Vec2(f32).as(1).step(Vec2(f32).new(0.5, 1));
+    const vec2f32_step = Vec2(f32).new(0.5, 1).step(Vec2(f32).as(1));
     try testing.expect(vec2f32_step.x == 0 and vec2f32_step.y == 1);
 
-    const vec3f32_step = Vec3(f32).as(1).step(Vec3(f32).new(0.5, 1, 1.5));
+    const vec3f32_step = Vec3(f32).new(0.5, 1, 1.5).step(Vec3(f32).as(1));
     try testing.expect(vec3f32_step.x == 0 and vec3f32_step.y == 1 and vec3f32_step.z == 1);
 
-    const vec4f32_step = Vec4(f32).as(1).step(Vec4(f32).new(0.5, 1, 1.5, 2));
+    const vec4f32_step = Vec4(f32).new(0.5, 1, 1.5, 2).step(Vec4(f32).as(1));
     try testing.expect(vec4f32_step.x == 0 and vec4f32_step.y == 1 and vec4f32_step.z == 1 and vec4f32_step.w == 1);
 
-    const vec1i32_step = Vec1(i32).as(1).step(Vec1(i32).new(0));
+    const vec1i32_step = Vec1(i32).new(0).step(Vec1(i32).as(1));
     try testing.expect(vec1i32_step.x == 0);
 
-    const vec2i32_step = Vec2(i32).as(1).step(Vec2(i32).new(0, -1));
+    const vec2i32_step = Vec2(i32).new(0, -1).step(Vec2(i32).as(1));
     try testing.expect(vec2i32_step.x == 0 and vec2i32_step.y == 0);
 
-    const vec3i32_step = Vec3(i32).as(1).step(Vec3(i32).new(0, -1, 1));
+    const vec3i32_step = Vec3(i32).new(0, -1, 1).step(Vec3(i32).as(1));
     try testing.expect(vec3i32_step.x == 0 and vec3i32_step.y == 0 and vec3i32_step.z == 1);
 
-    const vec4i32_step = Vec4(i32).as(1).step(Vec4(i32).new(0, -1, 1, 2));
+    const vec4i32_step = Vec4(i32).new(0, -1, 1, 2).step(Vec4(i32).as(1));
     try testing.expect(vec4i32_step.x == 0 and vec4i32_step.y == 0 and vec4i32_step.z == 1 and vec4i32_step.w == 1);
 
-    const vec1u32_step = Vec1(u32).as(1).step(Vec1(u32).new(0));
+    const vec1u32_step = Vec1(u32).new(0).step(Vec1(u32).as(1));
     try testing.expect(vec1u32_step.x == 0);
 
-    const vec2u32_step = Vec2(u32).as(1).step(Vec2(u32).new(0, 1));
+    const vec2u32_step = Vec2(u32).new(0, 1).step(Vec2(u32).as(1));
     try testing.expect(vec2u32_step.x == 0 and vec2u32_step.y == 1);
 
-    const vec3u32_step = Vec3(u32).as(1).step(Vec3(u32).new(0, 1, 1));
+    const vec3u32_step = Vec3(u32).new(0, 1, 1).step(Vec3(u32).as(1));
     try testing.expect(vec3u32_step.x == 0 and vec3u32_step.y == 1 and vec3u32_step.z == 1);
 
-    const vec4u32_step = Vec4(u32).as(1).step(Vec4(u32).new(0, 1, 1, 2));
+    const vec4u32_step = Vec4(u32).new(0, 1, 1, 2).step(Vec4(u32).as(1));
     try testing.expect(vec4u32_step.x == 0 and vec4u32_step.y == 1 and vec4u32_step.z == 1 and vec4u32_step.w == 1);
 }
 
-test "Vec.steps(...)" {
-    const vec1f32_steps = Vec1(f32).steps(1, Vec1(f32).new(0.5));
+test "Vec.stepScalar(...)" {
+    const vec1f32_steps = Vec1(f32).new(0.5).stepScalar(1);
     try testing.expect(vec1f32_steps.x == 0);
 
-    const vec2f32_steps = Vec2(f32).steps(1, Vec2(f32).new(0.5, 1));
+    const vec2f32_steps = Vec2(f32).new(0.5, 1).stepScalar(1);
     try testing.expect(vec2f32_steps.x == 0 and vec2f32_steps.y == 1);
 
-    const vec3f32_steps = Vec3(f32).steps(1, Vec3(f32).new(0.5, 1, 1.5));
+    const vec3f32_steps = Vec3(f32).new(0.5, 1, 1.5).stepScalar(1);
     try testing.expect(vec3f32_steps.x == 0 and vec3f32_steps.y == 1 and vec3f32_steps.z == 1);
 
-    const vec4f32_steps = Vec4(f32).steps(1, Vec4(f32).new(0.5, 1, 1.5, 2));
+    const vec4f32_steps = Vec4(f32).new(0.5, 1, 1.5, 2).stepScalar(1);
     try testing.expect(vec4f32_steps.x == 0 and vec4f32_steps.y == 1 and vec4f32_steps.z == 1 and vec4f32_steps.w == 1);
 
-    const vec1i32_steps = Vec1(i32).steps(1, Vec1(i32).new(0));
+    const vec1i32_steps = Vec1(i32).new(0).stepScalar(1);
     try testing.expect(vec1i32_steps.x == 0);
 
-    const vec2i32_steps = Vec2(i32).steps(1, Vec2(i32).new(0, -1));
+    const vec2i32_steps = Vec2(i32).new(0, -1).stepScalar(1);
     try testing.expect(vec2i32_steps.x == 0 and vec2i32_steps.y == 0);
 
-    const vec3i32_steps = Vec3(i32).steps(1, Vec3(i32).new(0, -1, 1));
+    const vec3i32_steps = Vec3(i32).new(0, -1, 1).stepScalar(1);
     try testing.expect(vec3i32_steps.x == 0 and vec3i32_steps.y == 0 and vec3i32_steps.z == 1);
 
-    const vec4i32_steps = Vec4(i32).steps(1, Vec4(i32).new(0, -1, 1, 2));
+    const vec4i32_steps = Vec4(i32).new(0, -1, 1, 2).stepScalar(1);
     try testing.expect(vec4i32_steps.x == 0 and vec4i32_steps.y == 0 and vec4i32_steps.z == 1 and vec4i32_steps.w == 1);
 
-    const vec1u32_steps = Vec1(u32).steps(1, Vec1(u32).new(0));
+    const vec1u32_steps = Vec1(u32).new(0).stepScalar(1);
     try testing.expect(vec1u32_steps.x == 0);
 
-    const vec2u32_steps = Vec2(u32).steps(1, Vec2(u32).new(0, 1));
+    const vec2u32_steps = Vec2(u32).new(0, 1).stepScalar(1);
     try testing.expect(vec2u32_steps.x == 0 and vec2u32_steps.y == 1);
 
-    const vec3u32_steps = Vec3(u32).steps(1, Vec3(u32).new(0, 1, 1));
+    const vec3u32_steps = Vec3(u32).new(0, 1, 1).stepScalar(1);
     try testing.expect(vec3u32_steps.x == 0 and vec3u32_steps.y == 1 and vec3u32_steps.z == 1);
 
-    const vec4u32_steps = Vec4(u32).steps(1, Vec4(u32).new(0, 1, 1, 2));
+    const vec4u32_steps = Vec4(u32).new(0, 1, 1, 2).stepScalar(1);
     try testing.expect(vec4u32_steps.x == 0 and vec4u32_steps.y == 1 and vec4u32_steps.z == 1 and vec4u32_steps.w == 1);
 }
 
@@ -2101,49 +2101,49 @@ test "Vec.reflect(...)" {
     const inc1f32 = Vec1(f32).new(2);
     const norm1f32 = Vec1(f32).new(1);
     const vec1f32_reflect = inc1f32.reflect(norm1f32);
-    const vec1f32_cmp = inc1f32.sub(norm1f32.muls(norm1f32.dot(inc1f32) * 2));
+    const vec1f32_cmp = inc1f32.sub(norm1f32.mulScalar(norm1f32.dot(inc1f32) * 2));
     try testing.expect(vec1f32_reflect.x == vec1f32_cmp.x);
 
     const inc2f32 = Vec2(f32).new(0.3, 0.4);
     const norm2f32 = Vec2(f32).new(0.83, 0.55);
     const vec2f32_reflect = inc2f32.reflect(norm2f32);
-    const vec2f32_cmp = inc2f32.sub(norm2f32.muls(norm2f32.dot(inc2f32) * 2));
+    const vec2f32_cmp = inc2f32.sub(norm2f32.mulScalar(norm2f32.dot(inc2f32) * 2));
     try testing.expect(vec2f32_reflect.x == vec2f32_cmp.x and vec2f32_reflect.y == vec2f32_cmp.y);
 
     const inc3f32 = Vec3(f32).new(3, 2, 6);
     const norm3f32 = Vec3(f32).new(0.5, 0.4, 0.3);
     const vec3f32_reflect = inc3f32.reflect(norm3f32);
-    const vec3f32_cmp = inc3f32.sub(norm3f32.muls(norm3f32.dot(inc3f32) * 2));
+    const vec3f32_cmp = inc3f32.sub(norm3f32.mulScalar(norm3f32.dot(inc3f32) * 2));
     try testing.expect(vec3f32_reflect.x == vec3f32_cmp.x and vec3f32_reflect.y == vec3f32_cmp.y and vec3f32_reflect.z == vec3f32_cmp.z);
 
     const inc4f32 = Vec4(f32).new(3, 2, 6, 8);
     const norm4f32 = Vec4(f32).new(0.18, 0.37, 0.55, 0.73);
     const vec4f32_reflect = inc4f32.reflect(norm4f32);
-    const vec4f32_cmp = inc4f32.sub(norm4f32.muls(norm4f32.dot(inc4f32) * 2));
+    const vec4f32_cmp = inc4f32.sub(norm4f32.mulScalar(norm4f32.dot(inc4f32) * 2));
     try testing.expect(vec4f32_reflect.x == vec4f32_cmp.x and vec4f32_reflect.y == vec4f32_cmp.y and vec4f32_reflect.z == vec4f32_cmp.z and vec4f32_reflect.w == vec4f32_cmp.w);
 
     const inc1i32 = Vec1(i32).new(1);
     const norm1i32 = Vec1(i32).new(1);
     const vec1i32_reflect = inc1i32.reflect(norm1i32);
-    const vec1i32_cmp = inc1i32.sub(norm1i32.muls(norm1i32.dot(inc1i32) * 2));
+    const vec1i32_cmp = inc1i32.sub(norm1i32.mulScalar(norm1i32.dot(inc1i32) * 2));
     try testing.expect(vec1i32_reflect.x == vec1i32_cmp.x);
 
     const inc2i32 = Vec2(i32).new(2, 1);
     const norm2i32 = Vec2(i32).new(1, 0);
     const vec2i32_reflect = inc2i32.reflect(norm2i32);
-    const vec2i32_cmp = inc2i32.sub(norm2i32.muls(norm2i32.dot(inc2i32) * 2));
+    const vec2i32_cmp = inc2i32.sub(norm2i32.mulScalar(norm2i32.dot(inc2i32) * 2));
     try testing.expect(vec2i32_reflect.x == vec2i32_cmp.x and vec2i32_reflect.y == vec2i32_cmp.y);
 
     const inc3i32 = Vec3(i32).new(3, 2, 1);
     const norm3i32 = Vec3(i32).new(1, 0, 0);
     const vec3i32_reflect = inc3i32.reflect(norm3i32);
-    const vec3i32_cmp = inc3i32.sub(norm3i32.muls(norm3i32.dot(inc3i32) * 2));
+    const vec3i32_cmp = inc3i32.sub(norm3i32.mulScalar(norm3i32.dot(inc3i32) * 2));
     try testing.expect(vec3i32_reflect.x == vec3i32_cmp.x and vec3i32_reflect.y == vec3i32_cmp.y and vec3i32_reflect.z == vec3i32_cmp.z);
 
     const inc4i32 = Vec4(i32).new(4, 3, 2, 1);
     const norm4i32 = Vec4(i32).new(1, 0, 0, 0);
     const vec4i32_reflect = inc4i32.reflect(norm4i32);
-    const vec4i32_cmp = inc4i32.sub(norm4i32.muls(norm4i32.dot(inc4i32) * 2));
+    const vec4i32_cmp = inc4i32.sub(norm4i32.mulScalar(norm4i32.dot(inc4i32) * 2));
     try testing.expect(vec4i32_reflect.x == vec4i32_cmp.x and vec4i32_reflect.y == vec4i32_cmp.y and vec4i32_reflect.z == vec4i32_cmp.z and vec4i32_reflect.w == vec4i32_cmp.w);
 }
 
@@ -2187,17 +2187,17 @@ test "Vec.div(...)" {
     try testing.expect(vec4f32_div.x == 1.5 and vec4f32_div.y == 2.5 and vec4f32_div.z == 3.5 and vec4f32_div.w == 4.5);
 }
 
-test "Vec.divs(...)" {
-    const vec1f32_divs = Vec1(f32).new(3).divs(2);
+test "Vec.divScalar(...)" {
+    const vec1f32_divs = Vec1(f32).new(3).divScalar(2);
     try testing.expect(vec1f32_divs.x == 1.5);
 
-    const vec2f32_divs = Vec2(f32).new(3, 5).divs(2);
+    const vec2f32_divs = Vec2(f32).new(3, 5).divScalar(2);
     try testing.expect(vec2f32_divs.x == 1.5 and vec2f32_divs.y == 2.5);
 
-    const vec3f32_divs = Vec3(f32).new(3, 5, 7).divs(2);
+    const vec3f32_divs = Vec3(f32).new(3, 5, 7).divScalar(2);
     try testing.expect(vec3f32_divs.x == 1.5 and vec3f32_divs.y == 2.5 and vec3f32_divs.z == 3.5);
 
-    const vec4f32_divs = Vec4(f32).new(3, 5, 7, 9).divs(2);
+    const vec4f32_divs = Vec4(f32).new(3, 5, 7, 9).divScalar(2);
     try testing.expect(vec4f32_divs.x == 1.5 and vec4f32_divs.y == 2.5 and vec4f32_divs.z == 3.5 and vec4f32_divs.w == 4.5);
 }
 
@@ -2328,21 +2328,21 @@ test "Vec.mix(...)" {
     try testing.expectApproxEqAbs(@as(f32, 5.4), vec3f32_mix.z, std.math.floatEps(f32));
 }
 
-test "Vec.mixs(...)" {
-    const vec3f32_mixs = Vec3(f32).new(2.0, 4.0, 6.0).mixs(Vec3(f32).new(3.0, 6.0, 3.0), 0.2);
+test "Vec.mixScalar(...)" {
+    const vec3f32_mixs = Vec3(f32).new(2.0, 4.0, 6.0).mixScalar(Vec3(f32).new(3.0, 6.0, 3.0), 0.2);
     try testing.expectApproxEqAbs(@as(f32, 2.2), vec3f32_mixs.x, std.math.floatEps(f32));
     try testing.expectApproxEqAbs(@as(f32, 4.4), vec3f32_mixs.y, std.math.floatEps(f32));
     try testing.expectApproxEqAbs(@as(f32, 5.4), vec3f32_mixs.z, std.math.floatEps(f32));
 }
 
 test "Vec.smoothstep(...)" {
-    const vec3f32_ss = Vec2(f32).smoothstep(Vec2(f32).as(0.0), Vec2(f32).as(1.0), Vec2(f32).new(0.5, 0.5));
+    const vec3f32_ss = Vec2(f32).new(0.5, 0.5).smoothstep(Vec2(f32).as(0.0), Vec2(f32).as(1.0));
     try testing.expectApproxEqAbs(@as(f32, 0.5), vec3f32_ss.x, std.math.floatEps(f32));
     try testing.expectApproxEqAbs(@as(f32, 0.5), vec3f32_ss.y, std.math.floatEps(f32));
 }
 
-test "Vec.smoothsteps(...)" {
-    const vec3f32_ss = Vec2(f32).smoothsteps(0.0, 1.0, Vec2(f32).new(0.5, 0.5));
+test "Vec.smoothstepScalar(...)" {
+    const vec3f32_ss = Vec2(f32).new(0.5, 0.5).smoothstepScalar(0.0, 1.0);
     try testing.expectApproxEqAbs(@as(f32, 0.5), vec3f32_ss.x, std.math.floatEps(f32));
     try testing.expectApproxEqAbs(@as(f32, 0.5), vec3f32_ss.y, std.math.floatEps(f32));
 }
