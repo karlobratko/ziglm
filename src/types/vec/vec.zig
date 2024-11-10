@@ -698,17 +698,16 @@ fn SignedNumericVec3Mixin(comptime Self: type, comptime Dimens: comptime_int, co
             /// Modifies vector itself so that it is a cross product of vectors, i.e. a vector that is perpendicular to the plane
             /// containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span.
             pub fn crossSelf(a: *Self, b: Self) void {
-                const a2 = a;
-                a.x = a2.y * b.z - a2.z * b.y;
-                a.y = a2.z * b.x - a2.x * b.z;
-                a.z = a2.x * b.y - a2.y * b.x;
+                a = cross(a, b);
             }
 
             /// Returns the cross product of the two input parameters, i.e. a vector that is perpendicular to the plane
             /// containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span.
             pub fn cross(a: Self, b: Self) Self {
-                var res = a;
-                res.crossSelf(b);
+                var res = Self.new(0, 0, 0);
+                res.x = a.y * b.z - a.z * b.y;
+                res.y = a.z * b.x - a.x * b.z;
+                res.z = a.x * b.y - a.y * b.x;
                 return res;
             }
         }
