@@ -2173,6 +2173,11 @@ test "Vec.faceforward(...)" {
     try testing.expect(vec4f32_ff.x == ori4f32.x and vec4f32_ff.y == ori4f32.y and vec4f32_ff.z == ori4f32.z and vec4f32_ff.w == ori4f32.w);
 }
 
+test "Vec3.cross(...)" {
+    const vec3f32_cross = Vec3(f32).new(1, 0, 0).cross(Vec3(f32).new(0, 1, 0));
+    try testing.expect(vec3f32_cross.x == 0 and vec3f32_cross.y == 0 and vec3f32_cross.z == 1);
+}
+
 test "Vec.div(...)" {
     const vec1f32_div = Vec1(f32).new(3).div(Vec1(f32).as(2));
     try testing.expect(vec1f32_div.x == 1.5);
